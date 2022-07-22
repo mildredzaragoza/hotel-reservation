@@ -30,7 +30,7 @@
             <%if(session.getAttribute("username") != null){ %>
 			<a href="/admin">START</a> 
 			<%}else{%>
-			<a href="/guests">START</a>
+			<a href="/login">START</a>
 			<%} %>
         </div>
 	</main>

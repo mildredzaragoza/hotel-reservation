@@ -30,4 +30,8 @@ public class GuestInfo {
     public void deleteGuest(Long id) {
     	 restTemplate.delete("http://localhost:8081/guests/" + id);
     }
+    
+    public ResponseEntity<Guest> addGuest(Guest guest) { 
+    	return restTemplate.postForEntity("http://localhost:8081/guests", guest, Guest.class);
+    }
 }

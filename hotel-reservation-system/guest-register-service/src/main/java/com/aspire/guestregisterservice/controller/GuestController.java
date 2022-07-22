@@ -30,7 +30,7 @@ public class GuestController {
         try{
             return guestService.getGuestById(id);
         }catch(Exception exception){
-            exception.printStackTrace();
+            exception.printStackTrace(); 
         }
         return null;
     }

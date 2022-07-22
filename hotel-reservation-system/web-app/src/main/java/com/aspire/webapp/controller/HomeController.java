@@ -1,24 +1,17 @@
 package com.aspire.webapp.controller;
 
-import java.util.Arrays;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.client.RestTemplate;
 
 import com.aspire.webapp.model.Guest;
 import com.aspire.webapp.service.GuestInfo;
-
-import antlr.collections.List;
 
 @Controller
 public class HomeController {
@@ -43,18 +36,6 @@ public class HomeController {
 		return "html/show-all-guest.jsp";
 	}
 	
-	@RequestMapping("/admin")
-	private String administratorView(HttpServletRequest request) {
-		HttpSession session = request.getSession();
-		String username = (String) session.getAttribute("username");
-		if(username.equals("admin")) {
-			return "html/admin-view.jsp";
-		}else {
-			return "html/guest-view.jsp";
-		}
-		
-	}
-	
 	@RequestMapping("/forgot-password")
 	private String changePasswrod() {
 		return "html/change-password.jsp";
@@ -65,18 +46,23 @@ public class HomeController {
 		return "html/guest-form.jsp";
 	}
 	
-    @PostMapping("/login")
-    private String validateLogin(HttpServletRequest request) {
-    	HttpSession session = request.getSession();
-		String username = request.getParameter("username");
-		String password = request.getParameter("password");
-		session.setAttribute("username", username);
-		
+	@RequestMapping("/admin")
+	private String administratorView(HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		String username = (String) session.getAttribute("username");
 		if(username.equals("admin")) {
 			return "html/admin-view.jsp";
 		}else {
 			return "html/guest-view.jsp";
-		}
+		}	
+	}
+	
+    @PostMapping("/login")
+    private String validateLogin(HttpServletRequest request) {
+    	HttpSession session = request.getSession();
+		String username = request.getParameter("username");
+		session.setAttribute("username", username);
+		return "/admin";
 	}
     
     @GetMapping("/log-out")
@@ -86,7 +72,7 @@ public class HomeController {
     	return "index.jsp";
 	}
     
-    @GetMapping("/guest-info")
+    @RequestMapping("/guest-info")
     private String getGuests(HttpServletRequest request){
     	HttpSession session = request.getSession();
     	java.util.List<Guest> guests = guestInfo.getGuests();
@@ -94,7 +80,20 @@ public class HomeController {
         return "html/show-all-guest.jsp";
     }
     
-    @RequestMapping("/editguest?id={id}")
+    @PostMapping("/add-guest")
+    private String addGuest(HttpServletRequest request) {
+		Guest newGuest = new Guest();		
+		newGuest.setName(request.getParameter("name"));
+		newGuest.setPhoneNumber(request.getParameter("phoneNumber"));
+		newGuest.setEmail(request.getParameter("email"));
+		newGuest.setCheckInDate(request.getParameter("checkindate"));
+		newGuest.setCheckOutDate(request.getParameter("checkoutdate"));
+		newGuest.setTypeGuest(request.getParameter("typeGuest"));
+		guestInfo.addGuest(newGuest);
+		return "/guest-info";
+	}
+    
+    @RequestMapping("/edit-guest/{id}")
     private String editGuest(@PathVariable(value="id") Long id, HttpServletRequest request){
     	HttpSession session = request.getSession();
     	Guest guest = guestInfo.getGuestById(id);
@@ -102,27 +101,13 @@ public class HomeController {
 		request.setAttribute("guest", guest);
 		System.out.println("EL ID ES: " + guest.getIdGuest());
 		System.out.println("EL GUEST ES: " + guest.getName());
-		return "./guest-form";
+		return "/html/show-all-guest.jsp";
     }
     
-    @PostMapping("/add-guest")
-    private String addGuest(HttpServletRequest request) {
-    	HttpSession session = request.getSession();
-		String username = request.getParameter("username");
-		String password = request.getParameter("password");
-		session.setAttribute("username", username);
-		
-		if(username.equals("admin")) {
-			return "html/admin-view.jsp";
-		}else {
-			return "html/guest-view.jsp";
-		}
-	}
-    
-    @GetMapping("/delete-guest/{id}")
+    @RequestMapping("/delete-guest/{id}")
     private String deleteGuest(@PathVariable Long id){
     	guestInfo.deleteGuest(id);
-        return "./home";
+        return "/html/show-all-guest.jsp";
     }
     
     @GetMapping("/guest-form")

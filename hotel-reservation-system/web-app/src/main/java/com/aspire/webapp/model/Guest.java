@@ -13,6 +13,15 @@ public class Guest {
     	
     }
     
+    public Guest(String name, String email, String phoneNumber, String checkInDate, String checkOutDate, String typeGuest) {
+    	this.name = name;
+    	this.email = email;
+    	this.phoneNumber = phoneNumber;
+    	this.checkInDate = checkInDate;
+    	this.checkOutDate = checkOutDate;
+    	this.typeGuest = typeGuest;
+    }
+    
     public void setName(String name) { this.name = name; }
 
     public String getName() { return name; }
