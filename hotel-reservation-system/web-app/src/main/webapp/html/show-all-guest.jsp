@@ -52,8 +52,8 @@
 	                  <td>${guest.checkOutDate}</td>
 	                  <%if(session.getAttribute("username").equals("admin")){%>
 		                  <td class="actions-container">
-		                    <a href="/edit-guest<c:out value='${guest.idGuest}'/>"><span class="action edit-button" title="Edit"></span></a>
-		                    <a href="/delete-guest<c:out value='${guest.idGuest}'/>"><span class="action delete-button" title="Delete"></span></a>
+		                    <a href="./edit-guest/<c:out value='${guest.idGuest}'/>"><span class="action edit-button" title="Edit"></span></a>
+		                    <a href="./delete-guest/<c:out value='${guest.idGuest}'/>"><span class="action delete-button" title="Delete"></span></a>
 		                  </td>
 		              <%}%>
 	                </tr>
