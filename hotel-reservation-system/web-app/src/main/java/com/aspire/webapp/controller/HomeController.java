@@ -93,27 +93,33 @@ public class HomeController {
 		return "/guest-info";
 	}
     
-    @RequestMapping("/edit-guest/{id}")
+    @RequestMapping("/edit-guest{id}")
     private String editGuest(@PathVariable(value="id") Long id, HttpServletRequest request){
     	HttpSession session = request.getSession();
     	Guest guest = guestInfo.getGuestById(id);
     	session.setAttribute("guest", guest);
 		request.setAttribute("guest", guest);
-		System.out.println("EL ID ES: " + guest.getIdGuest());
-		System.out.println("EL GUEST ES: " + guest.getName());
-		return "/html/show-all-guest.jsp";
+		return "/guest-form";
     }
     
-    @RequestMapping("/delete-guest/{id}")
+    @PostMapping("/update-guest")
+    private String updateGuest(HttpServletRequest request) {
+    	HttpSession session = request.getSession();
+    	Guest demoGuest = (Guest) session.getAttribute("guest");
+    	Long idGuest = demoGuest.getIdGuest();	
+		demoGuest.setName(request.getParameter("name"));
+		demoGuest.setPhoneNumber(request.getParameter("phoneNumber"));
+		demoGuest.setEmail(request.getParameter("email"));
+		demoGuest.setCheckInDate(request.getParameter("checkindate"));
+		demoGuest.setCheckOutDate(request.getParameter("checkoutdate"));
+		demoGuest.setTypeGuest(request.getParameter("typeGuest"));
+		guestInfo.updateGuest(idGuest, demoGuest);
+		return "/guest-info";
+	}
+    
+    @RequestMapping("/delete-guest{id}")
     private String deleteGuest(@PathVariable Long id){
     	guestInfo.deleteGuest(id);
-        return "/html/show-all-guest.jsp";
+        return "/guest-info";
     }
-    
-    @GetMapping("/guest-form")
-    private String getGuestForm(HttpServletRequest request){
-        return "./html/guest-form.jsp";
-    }
-    
-	
 }

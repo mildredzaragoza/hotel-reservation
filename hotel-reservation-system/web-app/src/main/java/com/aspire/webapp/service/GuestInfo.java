@@ -15,6 +15,10 @@ public class GuestInfo {
 	@Autowired
 	private RestTemplate restTemplate;
 	
+    public ResponseEntity<Guest> addGuest(Guest guest) { 
+    	return restTemplate.postForEntity("http://localhost:8081/guests", guest, Guest.class);
+    }
+	
     public List<Guest> getGuests() {
         return Arrays.asList(restTemplate.getForObject("http://localhost:8081/guests", Guest[].class));
     }
@@ -23,15 +27,13 @@ public class GuestInfo {
     	return restTemplate.getForObject("http://localhost:8081/guests/{id}", Guest.class, id);
     }
     
-    public ResponseEntity<Guest> updateGuest(Long id) {
-    	return restTemplate.getForEntity("http://localhost:8081/guests/{id}", Guest.class, id);
+    public void updateGuest(Long id, Guest guest) {
+    	restTemplate.put("http://localhost:8081/guests/{id}", guest, id);
     }
     
     public void deleteGuest(Long id) {
-    	 restTemplate.delete("http://localhost:8081/guests/" + id);
+    	 restTemplate.delete("http://localhost:8081/guests/{id}", id);
     }
     
-    public ResponseEntity<Guest> addGuest(Guest guest) { 
-    	return restTemplate.postForEntity("http://localhost:8081/guests", guest, Guest.class);
-    }
+
 }
