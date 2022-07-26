@@ -98,7 +98,6 @@ public class HomeController {
     	HttpSession session = request.getSession();
     	Guest guest = guestInfo.getGuestById(id);
     	session.setAttribute("guest", guest);
-		request.setAttribute("guest", guest);
 		return "/guest-form";
     }
     
@@ -114,6 +113,7 @@ public class HomeController {
 		demoGuest.setCheckOutDate(request.getParameter("checkoutdate"));
 		demoGuest.setTypeGuest(request.getParameter("typeGuest"));
 		guestInfo.updateGuest(idGuest, demoGuest);
+		session.removeAttribute("guest");
 		return "/guest-info";
 	}
     

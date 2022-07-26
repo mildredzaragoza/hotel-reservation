@@ -16,23 +16,23 @@ public class GuestInfo {
 	private RestTemplate restTemplate;
 	
     public ResponseEntity<Guest> addGuest(Guest guest) { 
-    	return restTemplate.postForEntity("http://localhost:8081/guests", guest, Guest.class);
+    	return restTemplate.postForEntity("http://guest-register-service/guests", guest, Guest.class);
     }
 	
     public List<Guest> getGuests() {
-        return Arrays.asList(restTemplate.getForObject("http://localhost:8081/guests", Guest[].class));
+        return Arrays.asList(restTemplate.getForObject("http://guest-register-service/guests", Guest[].class));
     }
     
     public Guest getGuestById(Long id) {
-    	return restTemplate.getForObject("http://localhost:8081/guests/{id}", Guest.class, id);
+    	return restTemplate.getForObject("http://guest-register-service/guests/{id}", Guest.class, id);
     }
     
     public void updateGuest(Long id, Guest guest) {
-    	restTemplate.put("http://localhost:8081/guests/{id}", guest, id);
+    	restTemplate.put("http://guest-register-service/guests/{id}", guest, id);
     }
     
     public void deleteGuest(Long id) {
-    	 restTemplate.delete("http://localhost:8081/guests/{id}", id);
+    	 restTemplate.delete("http://guest-register-service/guests/{id}", id);
     }
     
 

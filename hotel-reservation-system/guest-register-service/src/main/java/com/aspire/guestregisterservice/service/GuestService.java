@@ -3,7 +3,6 @@ package com.aspire.guestregisterservice.service;
 import com.aspire.guestregisterservice.models.Guest;
 import com.aspire.guestregisterservice.repository.GuestRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -22,18 +21,7 @@ public class GuestService {
         return guestRepository.save(guest);
     }
 
-    public Optional<Guest> getGuestById(Long id) throws Exception {
-       /*       Guest guest = null;
-            try {
-                guest = guestRepository.findById(id)
-                        .orElseThrow(() -> new Exception("Does not exist guest with id " + id ));
-            } catch (Exception exception) {
-                exception.printStackTrace();
-            }
-            return ResponseEntity.ok(guest);
-
-      */
-        if(!guestRepository.findById(id).isEmpty()){
+    public Optional<Guest> getGuestById(Long id) throws Exception {if(!guestRepository.findById(id).isEmpty()){
             return guestRepository.findById(id);
         }else{
             throw new Exception("Guest not found with id " + id);
@@ -49,7 +37,7 @@ public class GuestService {
             guestToUpdate.setPhoneNumber(guest.getPhoneNumber());
             guestToUpdate.setTypeGuest(guest.getTypeGuest());
             guestToUpdate.setCheckInDate(guest.getCheckInDate());
-            guestToUpdate.setCheckOutDate(guest.getCheckInDate());
+            guestToUpdate.setCheckOutDate(guest.getCheckOutDate());
             return guestRepository.save(guestToUpdate);
         }else{
             throw new Exception("Guest to update doesn't exist.");
