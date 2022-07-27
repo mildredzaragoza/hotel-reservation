@@ -4,6 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.client.circuitbreaker.CircuitBreaker;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -11,12 +12,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.aspire.webapp.model.Guest;
-import com.aspire.webapp.service.GuestInfo;
+import com.aspire.webapp.service.BookService;
 
 @Controller
 public class HomeController {
 	@Autowired
-    GuestInfo guestInfo;
+    BookService bookService;
 	
 	@Autowired
 	HttpSession session;
@@ -75,7 +76,7 @@ public class HomeController {
     @RequestMapping("/guest-info")
     private String getGuests(HttpServletRequest request){
     	HttpSession session = request.getSession();
-    	java.util.List<Guest> guests = guestInfo.getGuests();
+    	java.util.List<Guest> guests = bookService.getGuests();
     	session.setAttribute("guestList", guests);
         return "html/show-all-guest.jsp";
     }
@@ -89,14 +90,14 @@ public class HomeController {
 		newGuest.setCheckInDate(request.getParameter("checkindate"));
 		newGuest.setCheckOutDate(request.getParameter("checkoutdate"));
 		newGuest.setTypeGuest(request.getParameter("typeGuest"));
-		guestInfo.addGuest(newGuest);
+		bookService.addGuest(newGuest);
 		return "/guest-info";
 	}
     
     @RequestMapping("/edit-guest{id}")
     private String editGuest(@PathVariable(value="id") Long id, HttpServletRequest request){
     	HttpSession session = request.getSession();
-    	Guest guest = guestInfo.getGuestById(id);
+    	Guest guest = bookService.getGuestById(id);
     	session.setAttribute("guest", guest);
 		return "/guest-form";
     }
@@ -112,14 +113,17 @@ public class HomeController {
 		demoGuest.setCheckInDate(request.getParameter("checkindate"));
 		demoGuest.setCheckOutDate(request.getParameter("checkoutdate"));
 		demoGuest.setTypeGuest(request.getParameter("typeGuest"));
-		guestInfo.updateGuest(idGuest, demoGuest);
+		bookService.updateGuest(idGuest, demoGuest);
 		session.removeAttribute("guest");
 		return "/guest-info";
 	}
     
     @RequestMapping("/delete-guest{id}")
     private String deleteGuest(@PathVariable Long id){
-    	guestInfo.deleteGuest(id);
+    	bookService.deleteGuest(id);
         return "/guest-info";
     }
+    
+    //CircuitBreaker circuitBreaker = CircuitBreaker.ofDefaults("bookService");
+    
 }
