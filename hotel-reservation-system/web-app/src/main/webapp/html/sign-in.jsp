@@ -18,8 +18,9 @@
         	<a href="/forgot-password" class="forgot-password">Forgot your password?</a>
             <input type="submit" name="sign-in-button" id="sign-in-button" value="Sign in">
             <a href="./home" class="back-button">Back</a>
-            <%if(request.getAttribute("errorMessage")!=null){%>
-   			<h2 class="show-message"><%=request.getAttribute("errorMessage")%></h2> 
+            <%if(request.getAttribute("error")!=null){%>
+  
+   			<h2 class="show-message">Username or password invalid</h2> 
    			<%}%>
         </form>
    		 <div class="image-container"></div>

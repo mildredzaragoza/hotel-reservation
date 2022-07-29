@@ -6,10 +6,12 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.circuitbreaker.CircuitBreaker;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.aspire.webapp.model.Guest;
 import com.aspire.webapp.service.BookService;
@@ -22,13 +24,14 @@ public class HomeController {
 	@Autowired
 	HttpSession session;
 	
-	@GetMapping("/home")
+	@GetMapping({"/home", "/"})
 	private String showHome() {
 		return "index.jsp";
 	}
 	
 	@GetMapping("/login")
-	private String showLogIn() {
+	private String showLogIn(Model model, @RequestParam(required=false) String error) {
+		model.addAttribute("error", error);
 		return "html/sign-in.jsp";
 	}
 	
@@ -51,7 +54,7 @@ public class HomeController {
 	private String administratorView(HttpServletRequest request) {
 		HttpSession session = request.getSession();
 		String username = (String) session.getAttribute("username");
-		if(username.equals("admin")) {
+		if(username.equals("shabb")) {
 			return "html/admin-view.jsp";
 		}else {
 			return "html/guest-view.jsp";
@@ -62,11 +65,12 @@ public class HomeController {
     private String validateLogin(HttpServletRequest request) {
     	HttpSession session = request.getSession();
 		String username = request.getParameter("username");
+		System.out.println("La password es " + request.getParameter("password"));
 		session.setAttribute("username", username);
 		return "/admin";
 	}
     
-    @GetMapping("/log-out")
+    @GetMapping("/logout")
 	private String logOut(HttpServletRequest request) {
     	HttpSession session = request.getSession();
     	session.invalidate();

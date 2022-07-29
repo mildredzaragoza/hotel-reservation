@@ -16,20 +16,23 @@ public class Users {
 	private Long id;
 	
 	@Column(name = "username")
-	private String userName;
+	private String username;
 	
 	@Column(name = "password")
 	private String password;
-
 	
+	@Column(name = "role")
+	private String role;
+
 	public Users() {
 		super();
 	}
 
-	public Users(String userName, String password) {
+	public Users(String userName, String password, String rol) {
 		super();
-		this.userName = userName;
+		this.username = userName;
 		this.password = password;
+		this.role = rol;
 	}
 
 	public Long getId() {
@@ -41,11 +44,11 @@ public class Users {
 	}
 
 	public String getUserName() {
-		return userName;
+		return username;
 	}
 
 	public void setUserName(String userName) {
-		this.userName = userName;
+		this.username = userName;
 	}
 
 	public String getPassword() {
@@ -54,6 +57,14 @@ public class Users {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+	
+	public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
 	}
 	
 	

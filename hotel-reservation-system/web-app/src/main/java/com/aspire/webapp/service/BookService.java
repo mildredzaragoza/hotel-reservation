@@ -14,16 +14,11 @@ import com.aspire.webapp.model.Guest;
 
 @Service
 public class BookService {
-	private static final HttpStatus INTERNAL_SERVER_ERROR = null;
 	@Autowired
 	private RestTemplate restTemplate;
 	
     public ResponseEntity<Guest> addGuest(Guest guest) { 
-    	try {
-    		return restTemplate.postForEntity("http://guest-register-service/guests", guest, Guest.class);
-    	}catch(Exception exception) {
-    		return ResponseEntity.status(INTERNAL_SERVER_ERROR).build();
-    	}
+    	return restTemplate.postForEntity("http://guest-register-service/guests", guest, Guest.class);
     }
 	
     public List<Guest> getGuests() {

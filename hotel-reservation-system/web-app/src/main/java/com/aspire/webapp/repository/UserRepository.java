@@ -7,5 +7,5 @@ import com.aspire.webapp.model.Users;
 
 @Repository
 public interface UserRepository extends JpaRepository<Users, Long>{
-	public Users findByUserName(String userName);
+	public Users findByUsername(String username);
 }
