@@ -27,8 +27,10 @@ public class UserServiceImpl implements UserService{
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		Users user = userRepository.findByUsername(username);
 		if(user == null) {
+			System.out.println("From userServiceImpl: user not foundd");
 			throw new UsernameNotFoundException("User notttttt found");
 		}
+		System.out.println("User found");
 		return new CustomUserDetails(user);
 	}
 }
