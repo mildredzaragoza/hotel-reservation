@@ -17,7 +17,7 @@
             </div><!-- branding -->
             <div class="nav-options">
                 <a href="./home">Home</a>
-                <a href="./log-out">Log out</a>
+                <a href="./logout">Log out</a>
             </div>
           </nav>
     </header>
