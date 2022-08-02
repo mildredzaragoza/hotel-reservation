@@ -1,6 +1,5 @@
 package com.aspire.webapp.service;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -12,7 +11,7 @@ import org.springframework.web.client.RestTemplate;
 import com.aspire.webapp.model.Guest;
 
 @Service
-public class BookService {
+public class GuestInfo {
 	@Autowired
 	private RestTemplate restTemplate;
 	
@@ -21,20 +20,7 @@ public class BookService {
     }
 	
     public List<Guest> getGuests() {
-    	try {
-    		return Arrays.asList(restTemplate.getForObject("http://guest-register-service/guests", Guest[].class));
-    	}catch(Exception exception) {
-    		Guest defaultGuest = new Guest();
-    		defaultGuest.setIdGuest(null);
-    		defaultGuest.setName(null);
-    		defaultGuest.setEmail(null);
-    		defaultGuest.setCheckInDate(null);
-    		defaultGuest.setCheckOutDate(null);
-    		defaultGuest.setPhoneNumber(null);
-    		defaultGuest.setTypeGuest(null);
-    		List<Guest> defaultList = new ArrayList<>(Arrays.asList(defaultGuest));
-            return defaultList;
-    	}
+        return Arrays.asList(restTemplate.getForObject("http://guest-register-service/guests", Guest[].class));
     }
     
     public Guest getGuestById(Long id) {
