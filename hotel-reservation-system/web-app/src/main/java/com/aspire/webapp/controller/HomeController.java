@@ -6,22 +6,22 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.aspire.webapp.model.Guest;
+import com.aspire.webapp.model.Users;
 import com.aspire.webapp.service.BookService;
 
 @Controller
 public class HomeController {
 	@Autowired
     BookService bookService;
-	
-	@Autowired
-	HttpSession session;
 	
 	@GetMapping({"/home", "/"})
 	private String showHome() {
@@ -34,16 +34,38 @@ public class HomeController {
 		return "html/sign-in.jsp";
 	}
 	
+    @PostMapping("/login")
+    private String validateLogin(HttpServletRequest request) {
+    	HttpSession session = request.getSession();
+		String username = request.getParameter("username");
+		session.setAttribute("username", username);
+		return "/admin";
+	} 
+	
+	@GetMapping("/update-password") 
+	private String changePasswrod(Model model) {
+		System.out.println("From changePasswrod");
+		model.addAttribute("user", new Users());
+		return "html/change-password.jsp";
+	}
+	
+	@PostMapping("/update-password")
+	private String updatePassword(HttpServletRequest request){
+		System.out.println("From updatePassword");
+	//	Users user = new Users();		
+	/*	user.setUserName(request.getParameter("username"));
+		user.setPassword(request.getParameter("password"));
+		System.out.println("NEW USER IS: " + user.toString());
+		userService.updatePassword(user); */
+	//	model.addAttribute("user", userService.updatePassword(user));
+		return "html/sign-in.jsp";
+	}
+	
 	@GetMapping("/guests")
 	private String showGuests() {
 		return "html/show-all-guest.jsp";
 	}
-	
-	@RequestMapping("/forgot-password")
-	private String changePasswrod() {
-		return "html/change-password.jsp";
-	}
-	
+
 	@RequestMapping("/guest-form")
 	private String showGuestForm() {
 		return "html/guest-form.jsp";
@@ -53,22 +75,14 @@ public class HomeController {
 	private String administratorView(HttpServletRequest request) {
 		HttpSession session = request.getSession();
 		String username = (String) session.getAttribute("username");
-		if(username.equals("shabb")) {
+		session.removeAttribute("guest");
+		if(username.equals("admin")) {
 			return "html/admin-view.jsp";
 		}else {
 			return "html/guest-view.jsp";
 		}	
 	}
-	
-    @PostMapping("/login")
-    private String validateLogin(HttpServletRequest request) {
-    	HttpSession session = request.getSession();
-		String username = request.getParameter("username");
-		System.out.println("La password es " + request.getParameter("password"));
-		session.setAttribute("username", username);
-		return "/admin";
-	}
-    
+  
     @GetMapping("/logout")
 	private String logOut(HttpServletRequest request) {
     	HttpSession session = request.getSession();
@@ -83,19 +97,12 @@ public class HomeController {
     	session.setAttribute("guestList", guests);
         return "html/show-all-guest.jsp";
     }
-    
+ 
     @PostMapping("/add-guest")
-    private String addGuest(HttpServletRequest request) {
-		Guest newGuest = new Guest();		
-		newGuest.setName(request.getParameter("name"));
-		newGuest.setPhoneNumber(request.getParameter("phoneNumber"));
-		newGuest.setEmail(request.getParameter("email"));
-		newGuest.setCheckInDate(request.getParameter("checkindate"));
-		newGuest.setCheckOutDate(request.getParameter("checkoutdate"));
-		newGuest.setTypeGuest(request.getParameter("typeGuest"));
-		bookService.addGuest(newGuest);
+    private String addGuest(@ModelAttribute Guest guest, BindingResult result, Model model) {
+		bookService.addGuest(guest);
 		return "/guest-info";
-	}
+    }
     
     @RequestMapping("/edit-guest{id}")
     private String editGuest(@PathVariable(value="id") Long id, HttpServletRequest request){
@@ -104,22 +111,16 @@ public class HomeController {
     	session.setAttribute("guest", guest);
 		return "/guest-form";
     }
-    
+       
     @PostMapping("/update-guest")
-    private String updateGuest(HttpServletRequest request) {
+    private String updateGuest(@ModelAttribute Guest guest, BindingResult result, HttpServletRequest request) {
     	HttpSession session = request.getSession();
-    	Guest demoGuest = (Guest) session.getAttribute("guest");
-    	Long idGuest = demoGuest.getIdGuest();	
-		demoGuest.setName(request.getParameter("name"));
-		demoGuest.setPhoneNumber(request.getParameter("phoneNumber"));
-		demoGuest.setEmail(request.getParameter("email"));
-		demoGuest.setCheckInDate(request.getParameter("checkindate"));
-		demoGuest.setCheckOutDate(request.getParameter("checkoutdate"));
-		demoGuest.setTypeGuest(request.getParameter("typeGuest"));
-		bookService.updateGuest(idGuest, demoGuest);
+    	Guest guestToUpdate = (Guest) session.getAttribute("guest");
+		bookService.updateGuest(guestToUpdate.getIdGuest(), guest);
 		session.removeAttribute("guest");
 		return "/guest-info";
-	}
+    }
+    
     
     @RequestMapping("/delete-guest{id}")
     private String deleteGuest(@PathVariable Long id){

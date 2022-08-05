@@ -27,7 +27,13 @@ public class Users {
 	public Users() {
 		super();
 	}
-
+	
+	public Users(String userName, String password ) {
+		super();
+		this.username = userName;
+		this.password = password;
+	}
+	
 	public Users(String userName, String password, String rol) {
 		super();
 		this.username = userName;

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html >
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,7 +15,7 @@
        		<input type="text" id="username" name="username" required>
         	<label for="password">Password</label>
         	<input type="password" id="password" name="password" required>
-        	<a href="/forgot-password" class="forgot-password">Forgot your password?</a>
+        	<a href="/update-password" class="forgot-password">Forgot your password?</a>
             <input type="submit" name="sign-in-button" id="sign-in-button" value="Sign in">
             <a href="./home" class="back-button">Back</a>
             <%if(request.getAttribute("error")!=null){%>

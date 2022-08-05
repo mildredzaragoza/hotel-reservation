@@ -1,7 +1,6 @@
-
 <!DOCTYPE html>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -44,13 +43,13 @@
               	<c:forEach var="guest" items="${guestList}">
 	                <tr>
 	                  <td>${guest.idGuest}</td>
-	                  <td>${guest.name}</td>
+	                  <td th:value="${guest.name}" th:field="*{name}" id="name">${guest.name}</td>
 	                  <td>${guest.phoneNumber}</td>
 	                  <td>${guest.email}</td>
 	                  <td>${guest.typeGuest}</td>
 	                  <td>${guest.checkInDate}</td>
 	                  <td>${guest.checkOutDate}</td>
-	                  <%if(session.getAttribute("username").equals("shabb")){%>
+	                  <%if(session.getAttribute("username").equals("admin")){%>
 		                  <td class="actions-container">
 		                    <a href="/edit-guest<c:out value='${guest.idGuest}'/>"><span class="action edit-button" title="Edit"></span></a>
 		                    <a href="/delete-guest<c:out value='${guest.idGuest}'/>"><span class="action delete-button" title="Delete"></span></a>

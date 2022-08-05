@@ -10,7 +10,7 @@
 <body>
     <main>
       <div class="image-container"></div>
-      <form class="sign-in-form" action="./changePassword" method="post">
+      <form class="sign-in-form" action="/update-password" method="post">
             <h3>Change password</h3>
             <label for="username">Username</label>
             <input id="username" type="text" name="username" required>
