@@ -13,7 +13,7 @@
     <main>
    		<div class="image-container"></div>
         <c:if test="${guest != null}">
-			<form class="guest-form" action="./update-guest" method="post" th:object="${user}">
+			<form class="guest-form" action="./update-guest" method="post" th:object="${guest}">
 				<h1>Edit guest</h1>
 				<label for="name">Name</label>
 	            <input type="text" id="name" name="name" value="${guest.name}" th:field="*{name}" required>

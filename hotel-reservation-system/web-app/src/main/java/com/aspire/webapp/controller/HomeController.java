@@ -2,6 +2,7 @@ package com.aspire.webapp.controller;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -35,30 +36,31 @@ public class HomeController {
 	}
 	
     @PostMapping("/login")
-    private String validateLogin(HttpServletRequest request) {
+    private String validateLogin(@Valid @ModelAttribute Users user, BindingResult result, HttpServletRequest request) {
     	HttpSession session = request.getSession();
-		String username = request.getParameter("username");
-		session.setAttribute("username", username);
-		return "/admin";
+    	if(result.hasErrors()) {
+    		return "/login";
+    	}else {
+    		session.setAttribute("username", user.getUsername());
+    		return "/admin";
+    	}
 	} 
 	
-	@GetMapping("/update-password") 
-	private String changePasswrod(Model model) {
-		System.out.println("From changePasswrod");
-		model.addAttribute("user", new Users());
-		return "html/change-password.jsp";
+	@PostMapping("/update-password") 
+	private String changePasswrod(@Valid @ModelAttribute Users user, BindingResult result, HttpServletRequest request) {
+		String repassword = request.getParameter("re-password");
+		return "html/sign-in.jsp";
 	}
 	
-	@PostMapping("/update-password")
-	private String updatePassword(HttpServletRequest request){
-		System.out.println("From updatePassword");
+	@GetMapping("/update-password")
+	private String updatePassword(){
 	//	Users user = new Users();		
 	/*	user.setUserName(request.getParameter("username"));
 		user.setPassword(request.getParameter("password"));
 		System.out.println("NEW USER IS: " + user.toString());
 		userService.updatePassword(user); */
 	//	model.addAttribute("user", userService.updatePassword(user));
-		return "html/sign-in.jsp";
+		return "html/change-password.jsp";
 	}
 	
 	@GetMapping("/guests")
@@ -99,9 +101,13 @@ public class HomeController {
     }
  
     @PostMapping("/add-guest")
-    private String addGuest(@ModelAttribute Guest guest, BindingResult result, Model model) {
-		bookService.addGuest(guest);
-		return "/guest-info";
+    private String addGuest(@Valid @ModelAttribute Guest guest, BindingResult result) {
+    	if(result.hasErrors()) {
+    		return "/guest-form";
+    	}else {
+    		bookService.addGuest(guest);
+    		return "/guest-info";
+    	}
     }
     
     @RequestMapping("/edit-guest{id}")
@@ -113,10 +119,14 @@ public class HomeController {
     }
        
     @PostMapping("/update-guest")
-    private String updateGuest(@ModelAttribute Guest guest, BindingResult result, HttpServletRequest request) {
+    private String updateGuest(@Valid @ModelAttribute Guest guest, BindingResult result, HttpServletRequest request) {
     	HttpSession session = request.getSession();
     	Guest guestToUpdate = (Guest) session.getAttribute("guest");
-		bookService.updateGuest(guestToUpdate.getIdGuest(), guest);
+    	if(result.hasErrors()) {
+    		return "/guest-form";
+    	}else {
+    		bookService.updateGuest(guestToUpdate.getIdGuest(), guest);
+    	}
 		session.removeAttribute("guest");
 		return "/guest-info";
     }

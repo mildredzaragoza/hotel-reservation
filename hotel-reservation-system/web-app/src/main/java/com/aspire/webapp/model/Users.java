@@ -28,9 +28,9 @@ public class Users {
 		super();
 	}
 	
-	public Users(String userName, String password ) {
+	public Users(String username, String password ) {
 		super();
-		this.username = userName;
+		this.username = username;
 		this.password = password;
 	}
 	
@@ -49,12 +49,12 @@ public class Users {
 		this.id = id;
 	}
 
-	public String getUserName() {
+	public String getUsername() {
 		return username;
 	}
 
-	public void setUserName(String userName) {
-		this.username = userName;
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
 	public String getPassword() {

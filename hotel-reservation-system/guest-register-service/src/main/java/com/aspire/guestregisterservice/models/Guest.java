@@ -1,6 +1,7 @@
 package com.aspire.guestregisterservice.models;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 
 @Entity
 @Table(name = "guests")
@@ -9,11 +10,23 @@ public class Guest {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(unique = true, nullable = false)
     private Long idGuest;
+    @Column
+    @NotBlank(message="Name cannot be null.")
     private String name;
+    @Column
+    @NotBlank
     private String email;
+    @Column
+    @NotBlank(message="Phone number cannot be null.")
     private String phoneNumber;
+    @Column
+    @NotBlank(message="Check in date cannot be null.")
     private String checkInDate;
+    @Column
+    @NotBlank(message="Check out date cannot be null.")
     private String checkOutDate;
+    @Column
+    @NotBlank(message="Type guest cannot be null.")
     private String typeGuest;
 
     public void setName(String name) { this.name = name; }
