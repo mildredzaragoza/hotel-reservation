@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 	<meta charset="UTF-8">
@@ -9,7 +10,7 @@
 </head>
 <body>
 	<main>
-        <form class="sign-in-form" action="./login" method="post" th:object="${user}">
+        <form class="sign-in-form" th:action="@{/login}" method="post" th:object="${user}">
             <h3>Sign in</h3>
             <label for="username">Username</label>
        		<input type="text" id="username" name="username" th:field="*{username}" required>
@@ -22,7 +23,7 @@
    			<h2 class="show-message">Username or password invalid</h2> 
    			<%}%>
         </form>
-   		 <div class="image-container"></div>
+   		<div class="image-container"></div>
     </main>
 </body>
 </html>

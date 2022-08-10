@@ -18,7 +18,7 @@
 				<%if(session.getAttribute("username")!=null){%>
 				<a href="/admin">Hi, <%=session.getAttribute("username")%></a>
 				<%}else{%>
-				<a href="/login">Sign in <span class="user-logo"></span></a>
+				<a href="/admin">Sign in <span class="user-logo"></span></a>
 				<%}%> 
 			</div>
 		</nav>

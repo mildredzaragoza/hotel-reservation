@@ -37,18 +37,20 @@ public class HomeController {
 	
     @PostMapping("/login")
     private String validateLogin(@Valid @ModelAttribute Users user, BindingResult result, HttpServletRequest request) {
+    	System.out.println("username " + user.getUsername());
+    	System.out.println("password " + user.getPassword());
     	HttpSession session = request.getSession();
-    	if(result.hasErrors()) {
-    		return "/login";
+    	if(!user.getUsername().equals("user")) {
+    		return "/home";
     	}else {
     		session.setAttribute("username", user.getUsername());
     		return "/admin";
     	}
-	} 
+	}   
 	
 	@PostMapping("/update-password") 
 	private String changePasswrod(@Valid @ModelAttribute Users user, BindingResult result, HttpServletRequest request) {
-		String repassword = request.getParameter("re-password");
+	//	String repassword = request.getParameter("re-password");
 		return "html/sign-in.jsp";
 	}
 	
@@ -75,14 +77,14 @@ public class HomeController {
 	
 	@RequestMapping("/admin")
 	private String administratorView(HttpServletRequest request) {
-		HttpSession session = request.getSession();
+	/*	HttpSession session = request.getSession();
 		String username = (String) session.getAttribute("username");
 		session.removeAttribute("guest");
-		if(username.equals("admin")) {
+		if(username.equals("admin")) { */
 			return "html/admin-view.jsp";
-		}else {
+	/*	}else {
 			return "html/guest-view.jsp";
-		}	
+		}	*/
 	}
   
     @GetMapping("/logout")
