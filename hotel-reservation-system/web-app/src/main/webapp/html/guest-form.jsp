@@ -39,7 +39,7 @@
 	                </div>
 	            </div>
 	            <input type="submit" name="save-button" id="save-button" value="Update guest">
-	            <a href="/admin" class="cancel-button">Cancel</a>
+	            <a href="/main" class="cancel-button">Cancel</a>
 	            <%if(request.getAttribute("errorMessage")!=null){%>
 	            <h3><%=request.getAttribute("errorMessage")%></h3>
 				<%}%>
@@ -73,7 +73,7 @@
 	                </div>
 	            </div>
 				<input type="submit" name="save-button" id="save-button" value="Add guest">
-           		<a href="./admin" class="cancel-button">Cancel</a>
+           		<a href="./main" class="cancel-button">Cancel</a>
            		 <%if(request.getAttribute("errorMessage")!=null){%>
 	            <h3><%=request.getAttribute("errorMessage")%></h3>
 				<%}%>

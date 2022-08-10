@@ -25,10 +25,10 @@
     	<div class="image-container"></div>
         <div class="options-container">
             <h2>Select an option</h2>
-            <a href="./guest-info"  class="option">View all guest</a>
+            <a href="./guests"  class="option">View all guest</a>
             <a href="./guest-form" class="option">Add new guest</a>
-            <a href="./guest-info" class="option">Modify guest</a>
-            <a href="./guest-info" class="option">Delete guest</a>
+            <a href="./guests" class="option">Modify guest</a>
+            <a href="./guests" class="option">Delete guest</a>
         </div>
     </main>
 </body>

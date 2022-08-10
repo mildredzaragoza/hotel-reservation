@@ -44,7 +44,7 @@ public class HomeController {
     		return "/home";
     	}else {
     		session.setAttribute("username", user.getUsername());
-    		return "/admin";
+    		return "/main";
     	}
 	}   
 	
@@ -64,23 +64,19 @@ public class HomeController {
 	//	model.addAttribute("user", userService.updatePassword(user));
 		return "html/change-password.jsp";
 	}
-	
-	@GetMapping("/guests")
-	private String showGuests() {
-		return "html/show-all-guest.jsp";
-	}
 
 	@RequestMapping("/guest-form")
 	private String showGuestForm() {
 		return "html/guest-form.jsp";
 	}
 	
-	@RequestMapping("/admin")
+	@RequestMapping("/main")
 	private String administratorView(HttpServletRequest request) {
-	/*	HttpSession session = request.getSession();
-		String username = (String) session.getAttribute("username");
+		HttpSession session = request.getSession();
+	//	String username = (String) session.getAttribute("username");
 		session.removeAttribute("guest");
-		if(username.equals("admin")) { */
+	//	if(username.equals("admin")) { */
+			session.setAttribute("username","admin");
 			return "html/admin-view.jsp";
 	/*	}else {
 			return "html/guest-view.jsp";
@@ -94,7 +90,7 @@ public class HomeController {
     	return "index.jsp";
 	}
     
-    @RequestMapping("/guest-info")
+    @RequestMapping("/guests")
     private String getGuests(HttpServletRequest request){
     	HttpSession session = request.getSession();
     	java.util.List<Guest> guests = bookService.getGuests();
@@ -108,11 +104,11 @@ public class HomeController {
     		return "/guest-form";
     	}else {
     		bookService.addGuest(guest);
-    		return "/guest-info";
+    		return "/guests";
     	}
     }
     
-    @RequestMapping("/edit-guest{id}")
+    @RequestMapping("/edit-guest-{id}")
     private String editGuest(@PathVariable(value="id") Long id, HttpServletRequest request){
     	HttpSession session = request.getSession();
     	Guest guest = bookService.getGuestById(id);
@@ -122,6 +118,7 @@ public class HomeController {
        
     @PostMapping("/update-guest")
     private String updateGuest(@Valid @ModelAttribute Guest guest, BindingResult result, HttpServletRequest request) {
+    	System.out.println("UPDATEEEEEE " + guest.getName());
     	HttpSession session = request.getSession();
     	Guest guestToUpdate = (Guest) session.getAttribute("guest");
     	if(result.hasErrors()) {
@@ -130,13 +127,13 @@ public class HomeController {
     		bookService.updateGuest(guestToUpdate.getIdGuest(), guest);
     	}
 		session.removeAttribute("guest");
-		return "/guest-info";
+		return "/guests";
     }
     
     
-    @RequestMapping("/delete-guest{id}")
+    @RequestMapping("/delete-guest-{id}")
     private String deleteGuest(@PathVariable Long id){
     	bookService.deleteGuest(id);
-        return "/guest-info";
+        return "/guests";
     }
 }

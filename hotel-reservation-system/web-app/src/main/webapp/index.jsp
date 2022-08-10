@@ -16,9 +16,9 @@
 			<div class="nav-options">
 				<a href="">Home</a>
 				<%if(session.getAttribute("username")!=null){%>
-				<a href="/admin">Hi, <%=session.getAttribute("username")%></a>
+				<a href="/main">Hi, <%=session.getAttribute("username")%></a>
 				<%}else{%>
-				<a href="/admin">Sign in <span class="user-logo"></span></a>
+				<a href="/main">Sign in <span class="user-logo"></span></a>
 				<%}%> 
 			</div>
 		</nav>
@@ -28,7 +28,7 @@
         <div class="presentation-container">
             <h1>HOTEL RESERVATION SYSTEM</h1>
             <%if(session.getAttribute("username") != null){ %>
-			<a href="/admin">START</a> 
+			<a href="/main">START</a> 
 			<%}else{%>
 			<a href="/login">START</a>
 			<%} %>

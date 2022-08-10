@@ -17,7 +17,8 @@
             </div><!-- branding -->
             <div class="nav-options">
                 <a href="./home">Home</a>
-                <a href="./admin"><%=session.getAttribute("username")%></a>
+                <a href="./main">MAIN></a>
+           <!--  <a href="./main"><%=session.getAttribute("username")%></a> -->     
             </div>
         </nav>
     </header>
@@ -51,8 +52,8 @@
 	                  <td>${guest.checkOutDate}</td>
 	                  <%if(session.getAttribute("username").equals("admin")){%>
 		                  <td class="actions-container">
-		                    <a href="/edit-guest<c:out value='${guest.idGuest}'/>"><span class="action edit-button" title="Edit"></span></a>
-		                    <a href="/delete-guest<c:out value='${guest.idGuest}'/>"><span class="action delete-button" title="Delete"></span></a>
+		                    <a href="/edit-guest-<c:out value='${guest.idGuest}'/>"><span class="action edit-button" title="Edit"></span></a>
+		                    <a href="/delete-guest-<c:out value='${guest.idGuest}'/>"><span class="action delete-button" title="Delete"></span></a>
 		                  </td>
 		              <%}%>
 	                </tr>

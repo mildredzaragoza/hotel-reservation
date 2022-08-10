@@ -10,7 +10,7 @@
 </head>
 <body>
 	<main>
-        <form class="sign-in-form" th:action="@{/login}" method="post" th:object="${user}">
+        <form class="sign-in-form" action="/login" method="post" th:object="${user}">
             <h3>Sign in</h3>
             <label for="username">Username</label>
        		<input type="text" id="username" name="username" th:field="*{username}" required>
