@@ -36,8 +36,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 			.antMatchers("/edit-guest-**", "/update-guest", "/delete-guest-**").hasAnyAuthority("ADMIN")
 			.anyRequest().authenticated()
 		.and()
-			.formLogin().permitAll()
+			.formLogin()
+			.failureUrl("/login-error")
+			.permitAll()
 		.and()
-			.logout().permitAll();
+			.logout()
+			.logoutSuccessUrl("/home")
+			.permitAll();
 	}
 }

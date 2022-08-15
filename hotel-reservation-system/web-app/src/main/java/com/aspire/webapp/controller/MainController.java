@@ -4,6 +4,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
+import org.apache.log4j.BasicConfigurator;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,8 +21,12 @@ import com.aspire.webapp.model.Guest;
 import com.aspire.webapp.model.Users;
 import com.aspire.webapp.service.BookService;
 
+
 @Controller
-public class HomeController {
+public class MainController {
+	private static final Logger logger = Logger.getLogger(MainController.class);
+	{BasicConfigurator.configure();}
+	
 	@Autowired
     BookService bookService;
 	
@@ -28,25 +34,6 @@ public class HomeController {
 	private String showHome() {
 		return "index.jsp";
 	}
-	
-	@GetMapping("/login")
-	private String showLogIn(Model model, @RequestParam(required=false) String error) {
-		model.addAttribute("error", error);
-		return "html/sign-in.jsp";
-	}
-	
-    @PostMapping("/login")
-    private String validateLogin(@Valid @ModelAttribute Users user, BindingResult result, HttpServletRequest request) {
-    	System.out.println("username " + user.getUsername());
-    	System.out.println("password " + user.getPassword());
-    	HttpSession session = request.getSession();
-    	if(!user.getUsername().equals("user")) {
-    		return "/home";
-    	}else {
-    		session.setAttribute("username", user.getUsername());
-    		return "/main";
-    	}
-	}   
 	
 	@PostMapping("/update-password") 
 	private String changePasswrod(@Valid @ModelAttribute Users user, BindingResult result, HttpServletRequest request) {
@@ -118,7 +105,6 @@ public class HomeController {
        
     @PostMapping("/update-guest")
     private String updateGuest(@Valid @ModelAttribute Guest guest, BindingResult result, HttpServletRequest request) {
-    	System.out.println("UPDATEEEEEE " + guest.getName());
     	HttpSession session = request.getSession();
     	Guest guestToUpdate = (Guest) session.getAttribute("guest");
     	if(result.hasErrors()) {
