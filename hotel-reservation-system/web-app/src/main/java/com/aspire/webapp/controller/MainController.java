@@ -32,73 +32,63 @@ public class MainController {
 	
 	@GetMapping({"/home", "/"})
 	private String showHome() {
-		return "index.jsp";
-	}
-	
-	@PostMapping("/update-password") 
-	private String changePasswrod(@Valid @ModelAttribute Users user, BindingResult result, HttpServletRequest request) {
-	//	String repassword = request.getParameter("re-password");
-		return "html/sign-in.jsp";
-	}
-	
-	@GetMapping("/update-password")
-	private String updatePassword(){
-	//	Users user = new Users();		
-	/*	user.setUserName(request.getParameter("username"));
-		user.setPassword(request.getParameter("password"));
-		System.out.println("NEW USER IS: " + user.toString());
-		userService.updatePassword(user); */
-	//	model.addAttribute("user", userService.updatePassword(user));
-		return "html/change-password.jsp";
-	}
-
-	@RequestMapping("/guest-form")
-	private String showGuestForm() {
-		return "html/guest-form.jsp";
+		return "index.html";
 	}
 	
 	@RequestMapping("/main")
 	private String administratorView(HttpServletRequest request) {
 		HttpSession session = request.getSession();
-	//	String username = (String) session.getAttribute("username");
 		session.removeAttribute("guest");
-	//	if(username.equals("admin")) { */
-			session.setAttribute("username","admin");
-			return "html/admin-view.jsp";
-	/*	}else {
-			return "html/guest-view.jsp";
-		}	*/
+		session.setAttribute("username","admin");
+		return "main-view.html";
 	}
-  
+	
+    @RequestMapping("/guests")
+    private String getGuests( Model model){
+    	java.util.List<Guest> guests = bookService.getGuests();
+    	model.addAttribute("guestList", guests);
+        return "show-all-guest.html";
+    }
+	
+	@RequestMapping("/guest-form")
+	private String showGuestForm() {
+		return "guest-form.html";
+	}
+	
+	@PostMapping("/update-password") 
+	private String changePasswrod(@Valid @ModelAttribute Users user, BindingResult result, HttpServletRequest request) {
+		return "html/sign-in.jsp";
+	}
+	
+	@GetMapping("/update-password")
+	private String updatePassword(){
+		return "html/change-password.jsp";
+	}
+
     @GetMapping("/logout")
 	private String logOut(HttpServletRequest request) {
     	HttpSession session = request.getSession();
     	session.invalidate();
-    	return "index.jsp";
+    	return "index.html";
 	}
-    
-    @RequestMapping("/guests")
-    private String getGuests(HttpServletRequest request){
-    	HttpSession session = request.getSession();
-    	java.util.List<Guest> guests = bookService.getGuests();
-    	session.setAttribute("guestList", guests);
-        return "html/show-all-guest.jsp";
-    }
- 
+     
     @PostMapping("/add-guest")
-    private String addGuest(@Valid @ModelAttribute Guest guest, BindingResult result) {
+    private String addGuest(@Valid @ModelAttribute Guest guest, BindingResult result, Model model) {
     	if(result.hasErrors()) {
-    		return "/guest-form";
+    		return "guest-form.html";
     	}else {
     		bookService.addGuest(guest);
-    		return "/guests";
+        	java.util.List<Guest> guests = bookService.getGuests();
+        	model.addAttribute("guestList", guests);
+            return "show-all-guest.html";
     	}
     }
     
     @RequestMapping("/edit-guest-{id}")
-    private String editGuest(@PathVariable(value="id") Long id, HttpServletRequest request){
+    private String editGuest(@PathVariable(value="id") Long id, Model model, HttpServletRequest request){
     	HttpSession session = request.getSession();
     	Guest guest = bookService.getGuestById(id);
+    	model.addAttribute("guest", guest);
     	session.setAttribute("guest", guest);
 		return "/guest-form";
     }
@@ -118,8 +108,10 @@ public class MainController {
     
     
     @RequestMapping("/delete-guest-{id}")
-    private String deleteGuest(@PathVariable Long id){
+    private String deleteGuest(@PathVariable Long id, Model model){
     	bookService.deleteGuest(id);
-        return "/guests";
+    	java.util.List<Guest> guests = bookService.getGuests();
+    	model.addAttribute("guestList", guests);
+        return "show-all-guest.html";
     }
 }

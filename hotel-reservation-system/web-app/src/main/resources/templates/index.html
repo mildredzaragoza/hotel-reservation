@@ -1,5 +1,6 @@
 <!doctype html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" 
+xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
 	<meta charset="UTF-8">
 	<title>Hotel Reservation System</title>
@@ -15,11 +16,8 @@
 			</div>
 			<div class="nav-options">
 				<a href="">Home</a>
-				<%if(session.getAttribute("username")!=null){%>
-				<a href="/main">Hi, <%=session.getAttribute("username")%></a>
-				<%}else{%>
-				<a href="/main">Sign in <span class="user-logo"></span></a>
-				<%}%> 
+				<a sec:authorize="isAuthenticated()"  href="/main">Hi,  <span sec:authentication="name"></span></a>
+				<a sec:authorize="!isAuthenticated()" href="/main">Sign in <span class="user-logo"></span></a>
 			</div>
 		</nav>
 	</header>
@@ -27,11 +25,7 @@
 		<div class="image-container"></div>
         <div class="presentation-container">
             <h1>HOTEL RESERVATION SYSTEM</h1>
-            <%if(session.getAttribute("username") != null){ %>
 			<a href="/main">START</a> 
-			<%}else{%>
-			<a href="/login">START</a>
-			<%} %>
         </div>
 	</main>
 </body>
