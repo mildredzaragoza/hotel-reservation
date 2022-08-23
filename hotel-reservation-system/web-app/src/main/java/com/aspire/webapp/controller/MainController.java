@@ -15,10 +15,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import com.aspire.webapp.model.Guest;
-import com.aspire.webapp.model.Users;
 import com.aspire.webapp.service.BookService;
 
 
@@ -51,16 +49,6 @@ public class MainController {
 		return "guest-form";
 	}
 	
-	@PostMapping("/update-password") 
-	private String changePasswrod(@Valid @ModelAttribute Users user, BindingResult result, HttpServletRequest request) {
-		return "html/sign-in.jsp";
-	}
-	
-	@GetMapping("/update-password")
-	private String updatePassword(){
-		return "html/change-password.jsp";
-	}
-
     @GetMapping("/logout")
 	private String logOut(HttpServletRequest request) {
     	HttpSession session = request.getSession();

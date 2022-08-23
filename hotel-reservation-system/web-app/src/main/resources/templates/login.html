@@ -3,8 +3,8 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link rel="stylesheet" href="css/sign-in.css">
-    <link rel="icon" href="assets/hotel-icon-page.png">
+	<link rel="stylesheet" th:href="@{css/login.css}">
+    <link rel="icon" th:href="@{assets/hotel-icon-page.png}">
 	<title>Sign in</title>
 </head>
 <body>
@@ -15,10 +15,12 @@
        		<input type="text" id="username" name="username" required>
         	<label for="password">Password</label>
         	<input type="password" id="password" name="password" required>
-        	<a href="/update-password" class="forgot-password">Forgot your password?</a>
+        	<a href="/change-password" class="forgot-password">Forgot your password?</a>
             <input type="submit" name="sign-in-button" id="sign-in-button" value="Sign in">
             <a href="./home" class="back-button">Back</a>
-   			<h2 class="show-message">Username or password invalid</h2> 
+            <div th:if="${error} != null">
+   				<h2 class="show-message">Invalid credentials</h2> 
+   			</div>
         </form>
    		<div class="image-container"></div>
     </main>
