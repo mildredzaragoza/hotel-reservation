@@ -46,8 +46,8 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
                   <td th:text="${guest.checkInDate}" />
                   <td th:text="${guest.checkOutDate}" />
                   <td sec:authorize="hasAnyAuthority('ADMIN')" class="actions-container">
-                    <a href="/edit-guest-"th:value='${guest.idGuest}'><span class="action edit-button" title="Edit"></span></a>
-                    <a href="/delete-guest-"th:out="${guest.idGuest}"><span class="action delete-button" title="Delete"></span></a>
+                    <a th:href="@{/edit-guest-{id}(id=${guest.idGuest})}"><span class="action edit-button" title="Edit"></span></a>
+                    <a th:href="@{/delete-guest-{id}(id=${guest.idGuest})}"><span class="action delete-button" title="Delete"></span></a>
                   </td>
 	            </tr>
               </tbody>

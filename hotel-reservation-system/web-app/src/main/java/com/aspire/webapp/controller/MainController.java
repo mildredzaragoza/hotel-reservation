@@ -32,27 +32,23 @@ public class MainController {
 	
 	@GetMapping({"/home", "/"})
 	private String showHome() {
-		return "index.html";
+		return "index";
 	}
 	
 	@RequestMapping("/main")
-	private String administratorView(HttpServletRequest request) {
-		HttpSession session = request.getSession();
-		session.removeAttribute("guest");
-		session.setAttribute("username","admin");
-		return "main-view.html";
+	private String administratorView() {
+		return "main-view";
 	}
 	
     @RequestMapping("/guests")
     private String getGuests( Model model){
-    	java.util.List<Guest> guests = bookService.getGuests();
-    	model.addAttribute("guestList", guests);
-        return "show-all-guest.html";
+    	model.addAttribute("guestList", bookService.getGuests());
+        return "show-all-guest";
     }
 	
 	@RequestMapping("/guest-form")
 	private String showGuestForm() {
-		return "guest-form.html";
+		return "guest-form";
 	}
 	
 	@PostMapping("/update-password") 
@@ -69,49 +65,46 @@ public class MainController {
 	private String logOut(HttpServletRequest request) {
     	HttpSession session = request.getSession();
     	session.invalidate();
-    	return "index.html";
+    	return "index";
 	}
      
     @PostMapping("/add-guest")
     private String addGuest(@Valid @ModelAttribute Guest guest, BindingResult result, Model model) {
     	if(result.hasErrors()) {
-    		return "guest-form.html";
+    		return "guest-form";
     	}else {
     		bookService.addGuest(guest);
-        	java.util.List<Guest> guests = bookService.getGuests();
-        	model.addAttribute("guestList", guests);
-            return "show-all-guest.html";
+    		model.addAttribute("guestList", bookService.getGuests());
+            return "show-all-guest";
     	}
     }
     
     @RequestMapping("/edit-guest-{id}")
-    private String editGuest(@PathVariable(value="id") Long id, Model model, HttpServletRequest request){
+    private String editGuest(@PathVariable("id") Long id, Model model, HttpServletRequest request){
     	HttpSession session = request.getSession();
-    	Guest guest = bookService.getGuestById(id);
-    	model.addAttribute("guest", guest);
-    	session.setAttribute("guest", guest);
+    	model.addAttribute("guest", bookService.getGuestById(id));
+    	session.setAttribute("id", id);
 		return "/guest-form";
     }
        
     @PostMapping("/update-guest")
-    private String updateGuest(@Valid @ModelAttribute Guest guest, BindingResult result, HttpServletRequest request) {
+    private String updateGuest(@Valid @ModelAttribute Guest guest, BindingResult result, HttpServletRequest request, Model model) {
     	HttpSession session = request.getSession();
-    	Guest guestToUpdate = (Guest) session.getAttribute("guest");
     	if(result.hasErrors()) {
     		return "/guest-form";
-    	}else {
-    		bookService.updateGuest(guestToUpdate.getIdGuest(), guest);
+    	}else { 
+    		bookService.updateGuest((Long)session.getAttribute("id"), guest);
     	}
-		session.removeAttribute("guest");
-		return "/guests";
+		session.removeAttribute("id");
+    	model.addAttribute("guestList", bookService.getGuests());
+        return "show-all-guest";
     }
     
     
     @RequestMapping("/delete-guest-{id}")
-    private String deleteGuest(@PathVariable Long id, Model model){
+    private String deleteGuest(@PathVariable("id") Long id, Model model){
     	bookService.deleteGuest(id);
-    	java.util.List<Guest> guests = bookService.getGuests();
-    	model.addAttribute("guestList", guests);
-        return "show-all-guest.html";
+    	model.addAttribute("guestList", bookService.getGuests());
+        return "show-all-guest";
     }
 }

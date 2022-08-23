@@ -14,7 +14,7 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
    		<div class="image-container"></div>
 		<div th:if="${guest} != null">
 			<form class="guest-form" action="/update-guest" method="post" th:object="${guest}">
-				<h1>Add new guest</h1>
+				<h1>Update guest</h1>
 				<label for="name">Name</label>
 	            <input type="text" id="name" name="name" th:value="${guest.name}" required>
 	            <label for="email">Email</label>
@@ -39,7 +39,7 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 	                    <input type="date" id="checkOutDate" name="checkOutDate" th:value="${guest.checkOutDate}" required>
 	                </div>
 	            </div>
-				<input type="submit" name="save-button" id="save-button" value="Add guest">
+				<input type="submit" name="save-button" id="save-button" value="Save">
            		<a href="./main" class="cancel-button">Cancel</a>
 			</form>
 		</div>
