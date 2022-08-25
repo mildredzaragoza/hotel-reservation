@@ -5,6 +5,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,14 +32,16 @@ public class PasswordController {
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
 		String repassword = request.getParameter("re-password");
-		logger.info("Username from request: " + username);
-		logger.info("Password from request: " + password);
-		logger.info("Re-password from request: " + repassword);
-		if(password != repassword) {
+		
+		if(!password.equals(repassword)) {
 			model.addAttribute("error", "Passwords must match");
 		}else {
-			Users userToUpdate = userService.findUserByUsername(username);
-			logger.info("THE USERNAME FROM PASSWORD CONTROLLER: " + userToUpdate.getUsername());
+			try{
+				userService.updatePassword(username, password);
+				model.addAttribute("succesful", "Password changed succesfully. Please login.");
+			}catch(NotFoundException e) {
+				model.addAttribute("errorUsername", "User not found");
+			}
 		}
 		return "change-password";
 	}
