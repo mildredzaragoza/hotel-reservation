@@ -39,7 +39,7 @@ public class MainController {
 	}
 	
     @RequestMapping("/guests")
-    private String getGuests( Model model){
+    private String getGuests(Model model){
     	model.addAttribute("guestList", bookService.getGuests());
         return "show-all-guest";
     }
