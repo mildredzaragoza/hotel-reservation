@@ -7,6 +7,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 public class ApplicationExceptionHandler {
 	@ExceptionHandler(ApplicationException.class)
 	public String handleException() {
-		return "error";
+		return "error-page";
 	}
 }
