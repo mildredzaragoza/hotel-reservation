@@ -29,13 +29,12 @@ public class CrudController {
     }
     
     @PostMapping("/add-guest")
-    private String addGuest(@Valid @ModelAttribute Guest guest, BindingResult result, Model model) {
+    private String addGuest(@Valid @ModelAttribute Guest guest, BindingResult result) {
     	if(result.hasErrors()) {
     		throw new ApplicationException("It was not possible add the guest");
     	}else {
     		bookService.addGuest(guest);
-    		model.addAttribute("guestList", bookService.getGuests());
-            return "show-all-guest";
+    		return "forward:/guests";
     	}
     }
     
@@ -48,7 +47,7 @@ public class CrudController {
     }
        
     @PostMapping("/update-guest")
-    private String updateGuest(@Valid @ModelAttribute Guest guest, BindingResult result, HttpServletRequest request, Model model) {
+    private String updateGuest(@Valid @ModelAttribute Guest guest, BindingResult result, HttpServletRequest request) {
     	HttpSession session = request.getSession();
     	if(result.hasErrors()) {
     		throw new ApplicationException("It was not possible update");
@@ -56,14 +55,12 @@ public class CrudController {
     		bookService.updateGuest((Long)session.getAttribute("id"), guest);
     	}
 		session.removeAttribute("id");
-    	model.addAttribute("guestList", bookService.getGuests());
-        return "show-all-guest";
+		return "forward:/guests";
     }
     
     @RequestMapping("/delete-guest-{id}")
-    private String deleteGuest(@PathVariable("id") Long id, Model model){
+    private String deleteGuest(@PathVariable("id") Long id){
     	bookService.deleteGuest(id);
-    	model.addAttribute("guestList", bookService.getGuests());
-        return "show-all-guest";
+    	return "forward:/guests";
     }
 }
