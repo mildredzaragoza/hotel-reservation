@@ -10,22 +10,22 @@ public class Guest {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(unique = true, nullable = false)
     private Long idGuest;
-    @Column
+    @Column(nullable = false)
     @NotBlank(message="Name cannot be null.")
     private String name;
-    @Column
-    @NotBlank
+    @Column(nullable = false)
+    @NotBlank(message="Email cannot be null.")
     private String email;
-    @Column
+    @Column(nullable = false)
     @NotBlank(message="Phone number cannot be null.")
     private String phoneNumber;
-    @Column
+    @Column(nullable = false)
     @NotBlank(message="Check in date cannot be null.")
     private String checkInDate;
-    @Column
+    @Column(nullable = false)
     @NotBlank(message="Check out date cannot be null.")
     private String checkOutDate;
-    @Column
+    @Column(nullable = false)
     @NotBlank(message="Type guest cannot be null.")
     private String typeGuest;
 

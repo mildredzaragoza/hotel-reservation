@@ -13,25 +13,35 @@ public class GuestService {
     @Autowired
     private GuestRepository guestRepository;
 
-    public ArrayList<Guest> getAllGuests(){
-        return (ArrayList<Guest>) guestRepository.findAll();
+    public Guest saveGuest(Guest guest) throws Exception{
+    	try {
+    		return guestRepository.save(guest);
+    	}catch (Exception exception) {
+    		throw new Exception("Unregistered guest, all fields are required. Verify the guest's information.");	
+    	}
+        
+    }
+    
+    public ArrayList<Guest> getAllGuests() throws Exception{
+    	if(!guestRepository.findAll().isEmpty()){
+    		return (ArrayList<Guest>) guestRepository.findAll();	
+        }else{
+            throw new Exception("There are no guests");	
+    	}
     }
 
-    public Guest saveGuest(Guest guest)  {
-        return guestRepository.save(guest);
-    }
-
-    public Optional<Guest> getGuestById(Long id) throws Exception {if(!guestRepository.findById(id).isEmpty()){
+    public Optional<Guest> getGuestById(Long id) throws Exception {
+    	if(!guestRepository.findById(id).isEmpty()){
             return guestRepository.findById(id);
         }else{
-            throw new Exception("Guest not found with id " + id);
+            throw new Exception("Guest not found with ID " + id);
         }
     }
 
     public Guest updateGuest(Long id, Guest guest) throws Exception {
         Guest guestToUpdate = null;
         if(!guestRepository.findById(id).isEmpty()){
-            guestToUpdate = guestRepository.findById(id).orElseThrow(() -> new Exception("Guest to update doesn't exist."));
+            guestToUpdate = guestRepository.findById(id).get();
             guestToUpdate.setName(guest.getName());
             guestToUpdate.setEmail(guest.getEmail());
             guestToUpdate.setPhoneNumber(guest.getPhoneNumber());
@@ -44,12 +54,12 @@ public class GuestService {
         }
     }
 
-    public boolean deleteGuest(Long id){
+    public boolean deleteGuest(Long id) throws Exception{
         try {
             guestRepository.deleteById(id);
             return true;
         }catch (Exception exception){
-            return false;
+        	throw new Exception("Does not exist guest with ID " + id);
         }
     }
 

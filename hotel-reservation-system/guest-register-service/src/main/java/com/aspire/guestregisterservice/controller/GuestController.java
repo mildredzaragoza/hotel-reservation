@@ -7,6 +7,8 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,7 +27,12 @@ public class GuestController {
     })
     @GetMapping
     private List<Guest> getAllGuest(){
-        return guestService.getAllGuests();
+    	try {
+			return guestService.getAllGuests();
+		} catch (Exception exception) {
+			exception.printStackTrace();
+			return null;
+		}
     }
 
     @ApiOperation(value = "Saves new guest", response = Guest.class)
@@ -35,7 +42,12 @@ public class GuestController {
     })
     @PostMapping
     private Guest saveGuest(@RequestBody Guest newGuest){
-        return guestService.saveGuest(newGuest);
+        try {
+			return guestService.saveGuest(newGuest);
+		} catch (Exception exception) {
+			exception.printStackTrace();
+			return null;
+		}
     }
 
     @ApiOperation(value = "Finds guest by id", response = Guest.class)
@@ -49,8 +61,8 @@ public class GuestController {
             return guestService.getGuestById(id);
         }catch(Exception exception){
             exception.printStackTrace(); 
+            return null;
         }
-        return null;
     }
 
     @ApiOperation(value = "Updates a guest searching by id", response = Guest.class)
@@ -75,6 +87,11 @@ public class GuestController {
     })
     @DeleteMapping("/{id}")
     public boolean deleteGuest(@Parameter(description = "id of guest to be deleted") @PathVariable Long id){
-        return guestService.deleteGuest(id);
+        try {
+			return guestService.deleteGuest(id);
+		} catch (Exception exception) {
+			exception.printStackTrace();
+			return false;
+		}
     }
 }
