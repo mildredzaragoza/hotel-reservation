@@ -1,4 +1,4 @@
-package com.aspire.webapp.model;
+package com.aspire.userservice.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,7 +9,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "users")
-public class Users {
+public class User {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,17 +24,17 @@ public class Users {
 	@Column(name = "role")
 	private String role;
 
-	public Users() {
+	public User() {
 		super();
 	}
 	
-	public Users(String username, String password ) {
+	public User(String username, String password ) {
 		super();
 		this.username = username;
 		this.password = password;
 	}
 	
-	public Users(String userName, String password, String rol) {
+	public User(String userName, String password, String rol) {
 		super();
 		this.username = userName;
 		this.password = password;
