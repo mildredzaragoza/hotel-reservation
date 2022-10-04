@@ -75,6 +75,7 @@ class GuestServiceTest {
 	@Test 
 	@DisplayName("Test delete guest")
 	public void testDeleteGuest() throws Exception {
-		guestService.deleteGuest(39L);
+		Assertions.assertThrows(Exception.class, () -> guestService.deleteGuest(80L)); 
+		
 	}
 }

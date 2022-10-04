@@ -19,16 +19,8 @@ public class UserService {
 		return new BCryptPasswordEncoder();
 	}
 	
-    public User findUserByUsername(String username){
-    	if(userRepository.findByUsername(username) != null){
-    		return userRepository.findByUsername(username);
-    	}else{
-    		return null;
-    	}
-    }
-    
     public User updatePassword(String username, String password) throws NotFoundException {
-        User userToUpdate = findUserByUsername(username);
+        User userToUpdate = userRepository.findByUsername(username);
         if(userToUpdate == null){
         	throw new NotFoundException();
         }else{

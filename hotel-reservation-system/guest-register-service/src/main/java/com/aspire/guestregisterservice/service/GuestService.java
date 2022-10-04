@@ -50,6 +50,7 @@ public class GuestService {
             guestToUpdate.setCheckOutDate(guest.getCheckOutDate());
             return guestRepository.save(guestToUpdate);
         }else{
+        //	throw new NotFoundException();
             throw new Exception("Guest to update doesn't exist.");
         }
     }

@@ -56,12 +56,12 @@ public class GuestController {
             @ApiResponse(responseCode = "404", description = "Guest not found"),
     })
     @GetMapping("/{id}")
-    private Optional<Guest> getGuestById(@Parameter(description = "id of guest to be searched") @PathVariable Long id){
+    private ResponseEntity<Guest> getGuestById(@Parameter(description = "id of guest to be searched") @PathVariable Long id){
         try{
-            return guestService.getGuestById(id);
+        	return new ResponseEntity<Guest>(guestService.getGuestById(id).get(), HttpStatus.OK);
         }catch(Exception exception){
-            exception.printStackTrace(); 
-            return null;
+        	System.out.println(exception.getMessage());
+            return new ResponseEntity<Guest>(new Guest(), HttpStatus.NOT_FOUND);
         }
     }
 
@@ -82,16 +82,16 @@ public class GuestController {
 
     @ApiOperation(value = "Deletes guest by id")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Guest deleted"),
+            @ApiResponse(responseCode = "200", description = "Guest deleted successfully"),
             @ApiResponse(responseCode = "404", description = "Guest to delete not found"),
     })
     @DeleteMapping("/{id}")
-    public boolean deleteGuest(@Parameter(description = "id of guest to be deleted") @PathVariable Long id){
+    public ResponseEntity<Boolean> deleteGuest(@Parameter(description = "id of guest to be deleted") @PathVariable Long id){
         try {
-			return guestService.deleteGuest(id);
+			return new ResponseEntity<Boolean>(guestService.deleteGuest(id), HttpStatus.OK);
 		} catch (Exception exception) {
-			exception.printStackTrace();
-			return false;
+			System.out.println(exception.getMessage());
+			return new ResponseEntity<Boolean>(false, HttpStatus.NOT_FOUND);
 		}
     }
 }
