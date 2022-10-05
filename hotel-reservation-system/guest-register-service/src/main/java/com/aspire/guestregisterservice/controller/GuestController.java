@@ -7,12 +7,15 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
+import java.util.NoSuchElementException;
 
 @RestController
 @RequestMapping("/guests")
@@ -23,30 +26,33 @@ public class GuestController {
     @ApiOperation(value = "Gets all guests registered")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Guests found"),
-            @ApiResponse(responseCode = "404", description = "Guests not found"),
+            @ApiResponse(responseCode = "204", description = "There are no guests"),
     })
     @GetMapping
-    private List<Guest> getAllGuest(){
+    private ResponseEntity<List<Guest>> getAllGuest(){
     	try {
-			return guestService.getAllGuests();
+			return new ResponseEntity<List<Guest>>(guestService.getAllGuests(), HttpStatus.OK);
 		} catch (Exception exception) {
-			exception.printStackTrace();
-			return null;
+			return new ResponseEntity<List<Guest>>(new ArrayList<Guest>(), HttpStatus.NO_CONTENT);
 		}
     }
 
     @ApiOperation(value = "Saves new guest", response = Guest.class)
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Guest saved"),
-            @ApiResponse(responseCode = "422", description = "Guest's data is incomplete"),
+            @ApiResponse(responseCode = "200", description = "Guest was saved successfully"),
+            @ApiResponse(responseCode = "400", description = "Guest's data is incomplete"),
+            @ApiResponse(responseCode = "500", description = "Something went wrong"),
     })
     @PostMapping
-    private Guest saveGuest(@RequestBody Guest newGuest){
+    private ResponseEntity<Guest> saveGuest(@RequestBody Guest newGuest){
         try {
-			return guestService.saveGuest(newGuest);
-		} catch (Exception exception) {
-			exception.printStackTrace();
-			return null;
+			return new ResponseEntity<Guest>(guestService.saveGuest(newGuest), HttpStatus.OK);
+		}catch(DataIntegrityViolationException exception) { 
+			System.out.println(exception.getMessage());
+			return new ResponseEntity<Guest>(new Guest(), HttpStatus.BAD_REQUEST);
+    	}catch (Exception exception) {
+    		System.out.println(exception.getMessage());
+    		return new ResponseEntity<Guest>(new Guest(), HttpStatus.BAD_GATEWAY);
 		}
     }
 
@@ -54,44 +60,60 @@ public class GuestController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Guest found"),
             @ApiResponse(responseCode = "404", description = "Guest not found"),
+            @ApiResponse(responseCode = "500", description = "Something went wrong"),
     })
     @GetMapping("/{id}")
     private ResponseEntity<Guest> getGuestById(@Parameter(description = "id of guest to be searched") @PathVariable Long id){
         try{
-        	return new ResponseEntity<Guest>(guestService.getGuestById(id).get(), HttpStatus.OK);
-        }catch(Exception exception){
+        	return new ResponseEntity<Guest>(guestService.getGuestById(id), HttpStatus.OK);
+        }catch(NoSuchElementException exception){
         	System.out.println(exception.getMessage());
             return new ResponseEntity<Guest>(new Guest(), HttpStatus.NOT_FOUND);
-        }
+        }catch (Exception exception) {
+    		System.out.println(exception.getMessage());
+    		return new ResponseEntity<Guest>(new Guest(), HttpStatus.BAD_GATEWAY);
+		}
     }
 
     @ApiOperation(value = "Updates a guest searching by id", response = Guest.class)
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Guest updated"),
+            @ApiResponse(responseCode = "200", description = "Guest was updated successfully"),
+            @ApiResponse(responseCode = "400", description = "Guest's data is incomplete"),
             @ApiResponse(responseCode = "404", description = "Guest to update not found"),
+            @ApiResponse(responseCode = "500", description = "Something went wrong"),
     })
     @PutMapping("/{id}")
-    public Guest updateGuest(@Parameter(description = "id of guest to be updated") @PathVariable Long id, @RequestBody Guest guest) {
+    public ResponseEntity<Guest> updateGuest(@Parameter(description = "id of guest to be updated") @PathVariable Long id, @RequestBody Guest guest) {
         try{
-            return guestService.updateGuest(id, guest);
-        }catch(Exception exception){
-            exception.printStackTrace();
+            return new ResponseEntity<Guest>(guestService.updateGuest(id, guest), HttpStatus.OK);
+        }catch(NoSuchElementException exception){
+        	System.out.println(exception.getMessage());
+            return new ResponseEntity<Guest>(new Guest(), HttpStatus.NOT_FOUND);
+        }catch(DataIntegrityViolationException exception) { 
+			System.out.println(exception.getMessage());
+			return new ResponseEntity<Guest>(new Guest(), HttpStatus.BAD_REQUEST);
+    	}catch(Exception exception){
+    		System.out.println(exception.getMessage());
+    		return new ResponseEntity<Guest>(new Guest(), HttpStatus.BAD_GATEWAY);
         }
-        return null;
     }
 
     @ApiOperation(value = "Deletes guest by id")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Guest deleted successfully"),
             @ApiResponse(responseCode = "404", description = "Guest to delete not found"),
+            @ApiResponse(responseCode = "500", description = "Something went wrong"),
     })
     @DeleteMapping("/{id}")
     public ResponseEntity<Boolean> deleteGuest(@Parameter(description = "id of guest to be deleted") @PathVariable Long id){
         try {
 			return new ResponseEntity<Boolean>(guestService.deleteGuest(id), HttpStatus.OK);
-		} catch (Exception exception) {
+		}catch(EmptyResultDataAccessException exception) {
 			System.out.println(exception.getMessage());
 			return new ResponseEntity<Boolean>(false, HttpStatus.NOT_FOUND);
+    	} catch (Exception exception) {
+			System.out.println(exception.getMessage());
+			return new ResponseEntity<Boolean>(false, HttpStatus.BAD_GATEWAY);
 		}
     }
 }
