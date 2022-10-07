@@ -8,7 +8,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import com.aspire.webapp.model.Password;
+import com.aspire.webapp.exceptions.APIUnprocessableEntity;
+import com.aspire.webapp.model.User;
 import com.aspire.webapp.service.UserService;
 
 @Controller
@@ -23,15 +24,19 @@ public class PasswordController {
 	}
 	
 	@PostMapping("/change-password")  
-	private String changePasswrod(@ModelAttribute Password password, Model model) {	
-		if(!password.getPassword().equals(password.getRepassword())) {
+	private String changePasswrod(@ModelAttribute User user, Model model) {	
+		if(!user.getPassword().equals(user.getRepassword())) {
 			model.addAttribute("error", "Passwords must match");
 		}else {
 			try{
-				userService.updatePassword(password.getUsername(), password.getPassword());
+				userService.updatePassword(user);
 				model.addAttribute("successful", "Password changed successfully. /nPlease login.");
 			}catch(NotFoundException e) {
 				model.addAttribute("errorUsername", "User not found");
+			}catch(APIUnprocessableEntity e) {
+				model.addAttribute("errorPassword", "Password must contain at least 5 digits.");
+			}catch(Exception e) {
+				model.addAttribute("errorMessage", "Something went wrong, try again.");
 			}
 		}
 		return "change-password";

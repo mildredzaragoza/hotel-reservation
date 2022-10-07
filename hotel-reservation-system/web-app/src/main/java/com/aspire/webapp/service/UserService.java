@@ -5,17 +5,26 @@ import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import com.aspire.webapp.exceptions.APIUnprocessableEntity;
+import com.aspire.webapp.model.User;
+import com.aspire.webapp.utils.UserValidator;
+
 @Service
 public class UserService {
 	@Autowired
 	private RestTemplate restTemplate;
 	
-	public void updatePassword(String username, String password) throws NotFoundException {
+	@Autowired
+	private UserValidator userValidator;
+	
+	public void updatePassword(User user) throws Exception {
 		try {
-		    restTemplate.put("http://user-service/users/{username}", password, username);
+			userValidator.validate(user);
+		    restTemplate.put("http://user-service/users/{username}", user, user.getUsername());
+		}catch(APIUnprocessableEntity exception) {
+			throw new APIUnprocessableEntity(exception.getMessage());
 		}catch(Exception exception) {
 			throw new NotFoundException();
 		}
-		
 	}
 }

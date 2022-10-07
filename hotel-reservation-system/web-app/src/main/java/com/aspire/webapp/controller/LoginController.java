@@ -14,5 +14,5 @@ public class LoginController {
 			model.addAttribute("error", "Invalid credentials");
 		}
 		return "login.html";
-	}
+	}	
 }
