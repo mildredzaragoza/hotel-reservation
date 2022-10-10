@@ -1,10 +1,10 @@
 package com.aspire.webapp.service;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -20,33 +20,26 @@ public class BookService {
     	return restTemplate.postForEntity("http://guest-register-service/guests", guest, Guest.class);
     }
 	
-    public List<Guest> getGuests() {
-    	try {
-    		return Arrays.asList(restTemplate.getForObject("http://guest-register-service/guests", Guest[].class));
-    	}catch(Exception exception) {
-    		Guest defaultGuest = new Guest();
-    		defaultGuest.setIdGuest(null);
-    		defaultGuest.setName(null);
-    		defaultGuest.setEmail(null);
-    		defaultGuest.setCheckInDate(null);
-    		defaultGuest.setCheckOutDate(null);
-    		defaultGuest.setPhoneNumber(null);
-    		defaultGuest.setTypeGuest(null);
-    		List<Guest> defaultList = new ArrayList<>(Arrays.asList(defaultGuest));
-            return defaultList;
-    	}
+    public ResponseEntity<Guest[]> getGuests() { 
+    	return restTemplate.getForEntity("http://guest-register-service/guests", Guest[].class);
     }
     
-    public Guest getGuestById(Long id) {
-    	return restTemplate.getForObject("http://guest-register-service/guests/{id}", Guest.class, id);
+    public ResponseEntity<Guest> getGuestById(Long id) {
+    	return restTemplate.getForEntity("http://guest-register-service/guests/{id}", Guest.class, id);
     }
     
-    public void updateGuest(Long id, Guest guest) {
-    	restTemplate.put("http://guest-register-service/guests/{id}", guest, id);
+    public ResponseEntity<Guest> updateGuest(Long id, Guest guest) {
+    	 HttpHeaders headers = new HttpHeaders();      
+         headers.setContentType(MediaType.APPLICATION_JSON);
+         HttpEntity<Guest> entity = new HttpEntity<>(guest, headers);       
+    	 return restTemplate.exchange("http://guest-register-service/guests/"+id, HttpMethod.PUT, entity, Guest.class);
     }
     
-    public void deleteGuest(Long id) {
-    	 restTemplate.delete("http://guest-register-service/guests/{id}", id);
+    public ResponseEntity<Boolean> deleteGuest(Long id) {
+    	 HttpHeaders headers = new HttpHeaders();      
+         headers.setContentType(MediaType.APPLICATION_JSON);
+         HttpEntity<Object> entity = new HttpEntity<>(headers); 
+    	 return restTemplate.exchange("http://guest-register-service/guests/" + id, HttpMethod.DELETE, entity, Boolean.class);
     }
     
 

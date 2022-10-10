@@ -24,7 +24,7 @@ public class CrudController {
 	
     @RequestMapping("/guests")
     private String getGuests(Model model){
-    	model.addAttribute("guestList", bookService.getGuests());
+    	model.addAttribute("guestList", bookService.getGuests().getBody());
         return "show-all-guest";
     }
     
@@ -41,7 +41,7 @@ public class CrudController {
     @RequestMapping("/edit-guest-{id}")
     private String editGuest(@PathVariable("id") Long id, Model model, HttpServletRequest request){
     	HttpSession session = request.getSession();
-    	model.addAttribute("guest", bookService.getGuestById(id));
+    	model.addAttribute("guest", bookService.getGuestById(id).getBody());
     	session.setAttribute("id", id);
 		return "/guest-form";
     }
@@ -52,7 +52,7 @@ public class CrudController {
     	if(result.hasErrors()) {
     		throw new ApplicationException("It was not possible update");
     	}else { 
-    		bookService.updateGuest((Long)session.getAttribute("id"), guest);
+    		bookService.updateGuest((Long)session.getAttribute("id"), guest).getBody();
     	}
 		session.removeAttribute("id");
 		return "forward:/guests";
