@@ -37,7 +37,7 @@ public class GuestController {
 		}
     }
 
-    @ApiOperation(value = "Saves new guest", response = Guest.class)
+    @ApiOperation(value = "Saves new guest", response = ResponseEntity.class)
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Guest was saved successfully"),
             @ApiResponse(responseCode = "400", description = "Guest's data is incomplete"),
