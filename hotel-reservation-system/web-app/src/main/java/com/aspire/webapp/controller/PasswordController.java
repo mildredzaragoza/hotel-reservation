@@ -29,7 +29,7 @@ public class PasswordController {
 			model.addAttribute("error", "Passwords must match");
 		}else {
 			try{
-				userService.updatePassword(user);
+				userService.updatePassword(user).getBody();
 				model.addAttribute("successful", "Password changed successfully. /nPlease login.");
 			}catch(NotFoundException e) {
 				model.addAttribute("errorUsername", "User not found");
