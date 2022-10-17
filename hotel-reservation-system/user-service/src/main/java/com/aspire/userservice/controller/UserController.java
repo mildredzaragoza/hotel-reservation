@@ -37,7 +37,7 @@ public class UserController {
     @PutMapping("/{username}")
     public User updatePassword(@PathVariable String username, @RequestBody User user) throws Exception{ 
         userValidator.validate(user);
-        return userService.updatePassword(username, user.getPassword());
+        return userService.updatePassword(user);
     /*	
         try{
         	return new ResponseEntity<User>(userService.updatePassword(username, password), HttpStatus.OK);

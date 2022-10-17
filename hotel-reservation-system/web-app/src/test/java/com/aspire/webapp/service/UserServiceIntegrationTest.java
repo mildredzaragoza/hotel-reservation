@@ -15,7 +15,7 @@ import com.aspire.webapp.model.User;
 
 @SpringBootTest
 @DisplayName("Test user service")
-public class UserServiceTest {
+public class UserServiceIntegrationTest {
 	@Autowired
 	UserService userService;
 	

@@ -14,13 +14,10 @@ import com.aspire.webapp.model.Guest;
 
 @SpringBootTest
 @DisplayName("Test booking service")
-class BookServiceTest {
-
-	@Autowired
-	BookService bookingService;
+class BookServiceIntegrationTest {
 	
 	@Autowired
-	BookService bookService;
+	private BookService bookService;
 	
 	@Test
 	@DisplayName("Test add guest")

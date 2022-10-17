@@ -21,12 +21,14 @@ public class UserService {
 		return new BCryptPasswordEncoder();
 	}
 	
-    public User updatePassword(String username, String password) throws Exception {
+    public User updatePassword(User user) throws Exception {
 		try{
-			User userToUpdate = userRepository.findByUsername(username).get();
-	    	userToUpdate.setPassword(passwordEncoder().encode(password));
+			User userToUpdate = userRepository.findByUsername(user.getUsername()).get();
+			System.out.println("USERNAMEEE " + userToUpdate.getUsername());
+	    	userToUpdate.setPassword(passwordEncoder().encode(user.getPassword()));
 	    	return userRepository.save(userToUpdate);
 		}catch(NoSuchElementException exception) {
+			exception.printStackTrace();
 			throw new UserNotFound("User to update not found.");
 		}catch(Exception exception) {
 			exception.printStackTrace();

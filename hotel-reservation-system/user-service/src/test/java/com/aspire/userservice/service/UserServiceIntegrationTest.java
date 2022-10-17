@@ -6,10 +6,12 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import com.aspire.userservice.model.User;
+
 
 @SpringBootTest
 @DisplayName("Test user service")
-class UserServiceTest {
+class UserServiceIntegrationTest {
 
 	@Autowired
 	UserService userService;
@@ -17,9 +19,10 @@ class UserServiceTest {
 	@Test
 	@DisplayName("Test update user's password")
 	public void updateUserPasswordTest() throws Exception {
-		String username = "dev";
-		String password = "12345";
-		Assertions.assertNotNull(userService.updatePassword(username, password));
-		Assertions.assertThrows(Exception.class, () -> userService.updatePassword("dev", password)); 
+		User user = new User();
+		user.setUsername("dev");
+		user.setPassword("123456");
+		Assertions.assertNotNull(userService.updatePassword(user));
+		Assertions.assertThrows(Exception.class, () -> userService.updatePassword(new User())); 
 	}
 }
