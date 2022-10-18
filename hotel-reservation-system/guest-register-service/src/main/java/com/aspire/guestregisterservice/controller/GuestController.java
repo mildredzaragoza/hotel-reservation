@@ -29,7 +29,7 @@ public class GuestController {
             @ApiResponse(responseCode = "204", description = "There are no guests"),
     })
     @GetMapping
-    private ResponseEntity<List<Guest>> getAllGuest(){
+    public ResponseEntity<List<Guest>> getAllGuest(){
     	try {
 			return new ResponseEntity<List<Guest>>(guestService.getAllGuests(), HttpStatus.OK);
 		} catch (Exception exception) {
@@ -44,7 +44,7 @@ public class GuestController {
             @ApiResponse(responseCode = "500", description = "Something went wrong"),
     })
     @PostMapping
-    private ResponseEntity<Guest> saveGuest(@RequestBody Guest newGuest){
+    public ResponseEntity<Guest> saveGuest(@RequestBody Guest newGuest){
         try {
 			return new ResponseEntity<Guest>(guestService.saveGuest(newGuest), HttpStatus.OK);
 		}catch(DataIntegrityViolationException exception) { 
@@ -63,7 +63,7 @@ public class GuestController {
             @ApiResponse(responseCode = "500", description = "Something went wrong"),
     })
     @GetMapping("/{id}")
-    private ResponseEntity<Guest> getGuestById(@Parameter(description = "id of guest to be searched") @PathVariable Long id){
+    public ResponseEntity<Guest> getGuestById(@Parameter(description = "id of guest to be searched") @PathVariable Long id){
         try{
         	return new ResponseEntity<Guest>(guestService.getGuestById(id), HttpStatus.OK);
         }catch(NoSuchElementException exception){

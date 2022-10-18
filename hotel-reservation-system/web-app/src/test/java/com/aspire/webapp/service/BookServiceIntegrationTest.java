@@ -21,7 +21,7 @@ class BookServiceIntegrationTest {
 	
 	@Test
 	@DisplayName("Test add guest")
-	public void addGuestTest() throws Exception{
+	private void addGuestTest() throws Exception{
 		Guest guestOne = new Guest();
 		guestOne.setName("Test One");
 		guestOne.setEmail("test1@test.com");
@@ -36,21 +36,21 @@ class BookServiceIntegrationTest {
 	
 	@Test
 	@DisplayName("Test display all guests")
-	public void getAllGuestTest() {
+	private void getAllGuestTest() {
 		ResponseEntity<Guest[]> response = bookService.getGuests();
 		assertEquals(response.getStatusCode(), HttpStatus.OK);
 	}
 
 	@Test
 	@DisplayName("Test get guest by id")
-	public void getGuestByIdTest(){
+	private void getGuestByIdTest(){
 		ResponseEntity<Guest> responseEntity = bookService.getGuestById(1L);
 		assertEquals(responseEntity.getStatusCode(), HttpStatus.OK);
 	}
 		
 	@Test
 	@DisplayName("Test update guest")
-	public void updateGuestTest(){
+	private void updateGuestTest(){
 		Guest guest = new Guest();
 		guest.setName("Test two");
 		guest.setEmail("test1@test.com");
@@ -65,7 +65,7 @@ class BookServiceIntegrationTest {
 			
 	@Test 
 	@DisplayName("Test delete guest")
-	public void testDeleteGuest() throws Exception {
+	private void testDeleteGuest() throws Exception {
 		ResponseEntity<Boolean> responseEntity = bookService.deleteGuest(4L);
 		assertEquals(responseEntity.getStatusCode(), HttpStatus.OK);
 		assertThrows(Exception.class, () -> bookService.deleteGuest(40L)); 

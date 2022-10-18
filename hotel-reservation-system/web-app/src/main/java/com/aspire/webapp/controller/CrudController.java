@@ -23,13 +23,13 @@ public class CrudController {
     BookService bookService;
 	
     @RequestMapping("/guests")
-    private String getGuests(Model model){
+    public String getGuests(Model model){
     	model.addAttribute("guestList", bookService.getGuests().getBody());
         return "show-all-guest";
     }
     
     @PostMapping("/add-guest")
-    private String addGuest(@Valid @ModelAttribute Guest guest, BindingResult result) {
+    public String addGuest(@Valid @ModelAttribute Guest guest, BindingResult result) {
     	if(result.hasErrors()) {
     		throw new ApplicationException("It was not possible add the guest");
     	}else {
@@ -39,7 +39,7 @@ public class CrudController {
     }
     
     @RequestMapping("/edit-guest-{id}")
-    private String editGuest(@PathVariable("id") Long id, Model model, HttpServletRequest request){
+    public String editGuest(@PathVariable("id") Long id, Model model, HttpServletRequest request){
     	HttpSession session = request.getSession();
     	model.addAttribute("guest", bookService.getGuestById(id).getBody());
     	session.setAttribute("id", id);
@@ -47,7 +47,7 @@ public class CrudController {
     }
        
     @PostMapping("/update-guest")
-    private String updateGuest(@Valid @ModelAttribute Guest guest, BindingResult result, HttpServletRequest request) {
+    public String updateGuest(@Valid @ModelAttribute Guest guest, BindingResult result, HttpServletRequest request) {
     	HttpSession session = request.getSession();
     	if(result.hasErrors()) {
     		throw new ApplicationException("It was not possible update");
@@ -59,7 +59,7 @@ public class CrudController {
     }
     
     @RequestMapping("/delete-guest-{id}")
-    private String deleteGuest(@PathVariable("id") Long id){
+    public String deleteGuest(@PathVariable("id") Long id){
     	bookService.deleteGuest(id);
     	return "forward:/guests";
     }
