@@ -21,7 +21,7 @@ class BookServiceIntegrationTest {
 	
 	@Test
 	@DisplayName("Test add guest")
-	private void addGuestTest() throws Exception{
+	public void addGuestTest() throws Exception{
 		Guest guestOne = new Guest();
 		guestOne.setName("Test One");
 		guestOne.setEmail("test1@test.com");
@@ -31,26 +31,33 @@ class BookServiceIntegrationTest {
 		guestOne.setCheckOutDate("2022-09-09");
 		ResponseEntity<Guest> responseEntity = bookService.addGuest(guestOne);
 		assertEquals(responseEntity.getStatusCode(), HttpStatus.OK);
-		assertThrows(Exception.class, () -> bookService.addGuest(new Guest()));
+	}
+	
+	@Test
+	@DisplayName("Test add guest with missing data")
+	public void addGuestMissingDataTest() throws Exception{
+		ResponseEntity<Guest> responseEntity = bookService.addGuest(new Guest());
+		assertEquals(responseEntity.getStatusCode(), HttpStatus.BAD_REQUEST);
+	//	assertThrows(Exception.class, () -> bookService.addGuest(new Guest()));
 	}
 	
 	@Test
 	@DisplayName("Test display all guests")
-	private void getAllGuestTest() {
+	public void getAllGuestTest() {
 		ResponseEntity<Guest[]> response = bookService.getGuests();
 		assertEquals(response.getStatusCode(), HttpStatus.OK);
 	}
 
 	@Test
 	@DisplayName("Test get guest by id")
-	private void getGuestByIdTest(){
+	public void getGuestByIdTest(){
 		ResponseEntity<Guest> responseEntity = bookService.getGuestById(1L);
 		assertEquals(responseEntity.getStatusCode(), HttpStatus.OK);
 	}
 		
 	@Test
 	@DisplayName("Test update guest")
-	private void updateGuestTest(){
+	public void updateGuestTest(){
 		Guest guest = new Guest();
 		guest.setName("Test two");
 		guest.setEmail("test1@test.com");
@@ -65,7 +72,7 @@ class BookServiceIntegrationTest {
 			
 	@Test 
 	@DisplayName("Test delete guest")
-	private void testDeleteGuest() throws Exception {
+	public void testDeleteGuest() throws Exception {
 		ResponseEntity<Boolean> responseEntity = bookService.deleteGuest(4L);
 		assertEquals(responseEntity.getStatusCode(), HttpStatus.OK);
 		assertThrows(Exception.class, () -> bookService.deleteGuest(40L)); 

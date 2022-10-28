@@ -22,28 +22,28 @@ class UserServiceIntegrationTest {
 
 	@Test
 	@DisplayName("Test update user's password")
-	private void updateUserPasswordTest() throws Exception {
+	public void updateUserPasswordTest() throws Exception {
 		User user = new User("dev", "12345");
 		assertNotNull(userService.updatePassword(user)); 
 	} 
 	
 	@Test
 	@DisplayName("Test update user's password with invalid password")
-	private void updateInvalidUserPasswordTest() throws Exception {
+	public void updateInvalidUserPasswordTest() throws Exception {
 		User user = new User("dev", "123");
 		assertThrows(APIUnprocessableEntity.class, () -> userService.updatePassword(user)); 
 	}
 	
 	@Test
 	@DisplayName("Test update user's password with no existing username")
-	private void updateUserPasswordInvalidUsernameTest() throws Exception {
+	public void updateUserPasswordInvalidUsernameTest() throws Exception {
 		User user = new User("devvv", "12345");
 		assertThrows(UserNotFound.class, () -> userService.updatePassword(user)); 
 	}
 	
 	@Test
 	@DisplayName("Test update user's password with missing data")
-	private void updateUserPasswordMissingDataTest() throws Exception {
+	public void updateUserPasswordMissingDataTest() throws Exception {
 		assertThrows(APIUnprocessableEntity.class, () -> userService.updatePassword(new User())); 
 	}
 }

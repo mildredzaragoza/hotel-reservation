@@ -21,7 +21,7 @@ public class UserServiceIntegrationTest {
 	
 	@Test
 	@DisplayName("Test update user's password")
-	private void updateUserPasswordTest() throws Exception {
+	public void updateUserPasswordTest() throws Exception {
 		User user = new User("dev", "12345");
 		ResponseEntity<User> responseEntity = userService.updatePassword(user);
 		assertEquals(responseEntity.getStatusCode(), HttpStatus.OK); 
@@ -29,7 +29,7 @@ public class UserServiceIntegrationTest {
 	
 	@Test
 	@DisplayName("Test update user's password with missing data")
-	private void updateUserPasswordMissingDataTest() throws Exception {
+	public void updateUserPasswordMissingDataTest() throws Exception {
 		assertThrows(APIUnprocessableEntity.class, () -> userService.updatePassword(new User())); 
 	}
 	

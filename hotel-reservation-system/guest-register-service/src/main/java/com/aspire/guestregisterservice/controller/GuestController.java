@@ -48,10 +48,8 @@ public class GuestController {
         try {
 			return new ResponseEntity<Guest>(guestService.saveGuest(newGuest), HttpStatus.OK);
 		}catch(DataIntegrityViolationException exception) { 
-			System.out.println(exception.getMessage());
 			return new ResponseEntity<Guest>(new Guest(), HttpStatus.BAD_REQUEST);
     	}catch (Exception exception) {
-    		System.out.println(exception.getMessage());
     		return new ResponseEntity<Guest>(new Guest(), HttpStatus.BAD_GATEWAY);
 		}
     }
@@ -67,10 +65,8 @@ public class GuestController {
         try{
         	return new ResponseEntity<Guest>(guestService.getGuestById(id), HttpStatus.OK);
         }catch(NoSuchElementException exception){
-        	System.out.println(exception.getMessage());
             return new ResponseEntity<Guest>(new Guest(), HttpStatus.NOT_FOUND);
         }catch (Exception exception) {
-    		System.out.println(exception.getMessage());
     		return new ResponseEntity<Guest>(new Guest(), HttpStatus.BAD_GATEWAY);
 		}
     }
@@ -87,13 +83,10 @@ public class GuestController {
         try{
             return new ResponseEntity<Guest>(guestService.updateGuest(id, guest), HttpStatus.OK);
         }catch(NoSuchElementException exception){
-        	System.out.println(exception.getMessage());
             return new ResponseEntity<Guest>(new Guest(), HttpStatus.NOT_FOUND);
         }catch(DataIntegrityViolationException exception) { 
-			System.out.println(exception.getMessage());
 			return new ResponseEntity<Guest>(new Guest(), HttpStatus.BAD_REQUEST);
     	}catch(Exception exception){
-    		System.out.println(exception.getMessage());
     		return new ResponseEntity<Guest>(new Guest(), HttpStatus.BAD_GATEWAY);
         }
     }
@@ -109,10 +102,8 @@ public class GuestController {
         try {
 			return new ResponseEntity<Boolean>(guestService.deleteGuest(id), HttpStatus.OK);
 		}catch(EmptyResultDataAccessException exception) {
-			System.out.println(exception.getMessage());
 			return new ResponseEntity<Boolean>(false, HttpStatus.NOT_FOUND);
     	} catch (Exception exception) {
-			System.out.println(exception.getMessage());
 			return new ResponseEntity<Boolean>(false, HttpStatus.BAD_GATEWAY);
 		}
     }

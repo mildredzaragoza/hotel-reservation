@@ -20,7 +20,7 @@ class UserControllerTest {
 	
 	@Test
 	@DisplayName("Update user's password test")
-	private void updatePasswordTest() {
+	public void updatePasswordTest() {
 		User user = new User("dev", "12345");
 		ResponseEntity<User> responseEntity = userController.updatePassword(user.getUsername(), user);
 		assertEquals(responseEntity.getStatusCode(), HttpStatus.OK);
@@ -28,7 +28,7 @@ class UserControllerTest {
 	
 	@Test
 	@DisplayName("Test update user's password with invalid password")
-	private void updateInvalidUserPasswordTest() {
+	public void updateInvalidUserPasswordTest() {
 		User user = new User("dev", "123");
 		ResponseEntity<User> responseEntity = userController.updatePassword(user.getUsername(), user);
 		assertEquals(responseEntity.getStatusCode(), HttpStatus.BAD_REQUEST);
@@ -36,7 +36,7 @@ class UserControllerTest {
 	
 	@Test
 	@DisplayName("Test update user's password with missing data")
-	private void updateUserPasswordMissingDataTest() {
+	public void updateUserPasswordMissingDataTest() {
 		User user = new User();
 		ResponseEntity<User> responseEntity = userController.updatePassword(user.getUsername(), user);
 		assertEquals(responseEntity.getStatusCode(), HttpStatus.BAD_REQUEST);
@@ -44,7 +44,7 @@ class UserControllerTest {
 	
 	@Test
 	@DisplayName("Update user's password with no existing username test")
-	private void updatePasswordNoExistingUsernameTest() {
+	public void updatePasswordNoExistingUsernameTest() {
 		User user = new User("devvv", "12345");
 		ResponseEntity<User> responseEntity = userController.updatePassword(user.getUsername(), user);
 		assertEquals(responseEntity.getStatusCode(), HttpStatus.NOT_FOUND);

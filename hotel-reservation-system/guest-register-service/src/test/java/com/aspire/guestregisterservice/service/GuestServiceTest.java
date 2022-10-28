@@ -22,7 +22,7 @@ class GuestServiceTest {
 	
 	@Test
 	@DisplayName("Test save guest")
-	private void saveGuestTest() throws Exception {
+	public void saveGuestTest() throws Exception {
 		Guest guestOne = new Guest();
 		guestOne.setName("Test one");
 		guestOne.setEmail("test1@test.com");
@@ -37,34 +37,34 @@ class GuestServiceTest {
 	
 	@Test
 	@DisplayName("Test save guest missing data")
-	private void saveGuestTestMissingData() throws Exception {
+	public void saveGuestTestMissingData() throws Exception {
 		assertThrows(DataIntegrityViolationException.class, () -> guestService.saveGuest(new Guest()));
 	}
 	
 	
 	@Test
 	@DisplayName("Test display all guests")
-	private void getAllGuestTest() throws Exception {
+	public void getAllGuestTest() throws Exception {
 		ArrayList<Guest> guests = guestService.getAllGuests();
 		assertTrue(guests.size() > 0);
 	}
 	
 	@Test
 	@DisplayName("Test get guest by id")
-	private void getGuestByIdTest() throws Exception {
+	public void getGuestByIdTest() throws Exception {
 		Guest guest = guestService.getGuestById(30L);
 		assertTrue(guest != null);
 	}
 	
 	@Test
 	@DisplayName("Test get guest by not existing id")
-	private void getGuestByNoExistIdTest() throws Exception {
+	public void getGuestByNoExistIdTest() throws Exception {
 		assertThrows(NoSuchElementException.class, () -> guestService.getGuestById(80L));
 	}	
 	
 	@Test
 	@DisplayName("Test update guest")
-	private void updateGuestTest() throws Exception {
+	public void updateGuestTest() throws Exception {
 		Guest guest = new Guest();
 		guest.setName("Test One");
 		guest.setEmail("test1@test.com");
@@ -77,25 +77,25 @@ class GuestServiceTest {
 	
 	@Test
 	@DisplayName("Test update guest missing data")
-	private void updateGuestTestMissingData() throws Exception {
+	public void updateGuestTestMissingData() throws Exception {
 		assertThrows(DataIntegrityViolationException.class, () -> guestService.updateGuest(1L, new Guest())); 
 	}
 	
 	@Test
 	@DisplayName("Test update guest with not existing id")
-	private void updateGuestTestIdNotExists() throws Exception {
+	public void updateGuestTestIdNotExists() throws Exception {
 		assertThrows(NoSuchElementException.class, () -> guestService.updateGuest(80L, new Guest())); 
 	}
 	
 	@Test 
 	@DisplayName("Test delete guest")
-	private void testDeleteGuest() throws Exception {
+	public void testDeleteGuest() throws Exception {
 		assertTrue(guestService.deleteGuest(43L));
 	}
 	
 	@Test 
 	@DisplayName("Test delete guest with id doesn't exist")
-	private void testDeleteGuestNotExistingId() throws Exception {
+	public void testDeleteGuestNotExistingId() throws Exception {
 		assertThrows(EmptyResultDataAccessException.class, () -> guestService.deleteGuest(80L)); 
 		
 	}
