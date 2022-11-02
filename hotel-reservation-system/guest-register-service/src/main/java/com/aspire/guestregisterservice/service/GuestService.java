@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Service
 public class GuestService {
@@ -27,16 +28,12 @@ public class GuestService {
     }
     
     public ArrayList<Guest> getAllGuests() throws Exception{
-    //	if(!guestRepository.findAll().isEmpty()){
-    		return (ArrayList<Guest>) guestRepository.findAll();	
-    //    }else{
-    //        throw new Exception("There are no guests");	
-    //	}
+    	return (ArrayList<Guest>) guestRepository.findAll();	
     }
 
-    public Guest getGuestById(Long id) throws Exception {
+    public Optional<Guest> getGuestById(Long id) throws Exception {
        try {
-    	   return guestRepository.findById(id).get();
+    	   return guestRepository.findById(id);
        }catch(NoSuchElementException exception) {
     	   throw new NoSuchElementException("Guest with ID " + id + " doesn't exist");
        }catch(Exception exception) {

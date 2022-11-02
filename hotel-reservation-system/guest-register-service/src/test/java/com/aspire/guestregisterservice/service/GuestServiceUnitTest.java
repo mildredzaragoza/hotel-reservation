@@ -1,14 +1,13 @@
 package com.aspire.guestregisterservice.service;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
-
-import javax.inject.Inject;
+import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -22,10 +21,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import com.aspire.guestregisterservice.models.Guest;
 import com.aspire.guestregisterservice.repository.GuestRepository;
 
-public class GuestServiceTestMockito {
-	
-	@Mock
-	private Guest guest;
+@ExtendWith(MockitoExtension.class)
+public class GuestServiceUnitTest {
 	
 	@Mock
 	private GuestRepository guestRepository;
@@ -41,17 +38,16 @@ public class GuestServiceTestMockito {
     @Test
     @DisplayName("Test mock creation")
     public void testMockCreation(){
-    	assertNotNull(guest);
         assertNotNull(guestRepository);
         assertNotNull(guestService);
     }
-    
+   
     @Test
     @DisplayName("Get all guest test")
     public void getAllGuestTest() throws Exception {
     	ArrayList<Guest> guests = new ArrayList<Guest>();
     	when(guestRepository.findAll()).thenReturn(guests);
-        guestService.getAllGuests();
+    	guestService.getAllGuests();
         verify(guestRepository).findAll();
     }
 
@@ -64,10 +60,27 @@ public class GuestServiceTestMockito {
     }
     
     @Test
-    @DisplayName("Update guest test")
-    public void updateTest() throws Exception {
-    	when(guestRepository.save(any(Guest.class))).thenReturn(new Guest());
-    	guestService.updateGuest(1L, new Guest());
-    	verify(guestRepository).save(any(Guest.class));
+    @DisplayName("Delete guest test")
+    public void deleteGuestTest() throws Exception {
+    	guestService.deleteGuest(5L);
+    	verify(guestRepository, times(1)).deleteById(any());
     }
+    
+    @Test
+    @DisplayName("Get guest by id test")
+    public void getGuestByIdTest() throws Exception {
+    	when(guestRepository.findById(any())).thenReturn(Optional.empty());
+    	guestService.getGuestById(5L);
+    	verify(guestRepository).findById(any());
+    }
+   
+    @Test
+    @DisplayName("Update guest test")
+    public void updateGuestTest() throws Exception {
+    	when(guestRepository.findById(any())).thenReturn(Optional.empty());
+    	when(guestRepository.save(any(Guest.class))).thenReturn(new Guest());
+    	guestService.updateGuest(5L, new Guest());
+    	verify(guestRepository, times(1)).save(any(Guest.class));
+    }
+    
 }

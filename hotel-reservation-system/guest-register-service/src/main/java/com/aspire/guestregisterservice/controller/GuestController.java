@@ -63,7 +63,7 @@ public class GuestController {
     @GetMapping("/{id}")
     public ResponseEntity<Guest> getGuestById(@Parameter(description = "id of guest to be searched") @PathVariable Long id){
         try{
-        	return new ResponseEntity<Guest>(guestService.getGuestById(id), HttpStatus.OK);
+        	return new ResponseEntity<Guest>(guestService.getGuestById(id).get(), HttpStatus.OK);
         }catch(NoSuchElementException exception){
             return new ResponseEntity<Guest>(new Guest(), HttpStatus.NOT_FOUND);
         }catch (Exception exception) {

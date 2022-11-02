@@ -16,7 +16,7 @@ import com.aspire.guestregisterservice.models.Guest;
 
 @SpringBootTest
 @DisplayName("Test service")
-class GuestServiceTest {
+class GuestServiceIntegrationTest {
 	@Autowired
 	private GuestService guestService;
 	
@@ -52,7 +52,7 @@ class GuestServiceTest {
 	@Test
 	@DisplayName("Test get guest by id")
 	public void getGuestByIdTest() throws Exception {
-		Guest guest = guestService.getGuestById(30L);
+		Guest guest = guestService.getGuestById(5L).get();
 		assertTrue(guest != null);
 	}
 	
@@ -66,13 +66,13 @@ class GuestServiceTest {
 	@DisplayName("Test update guest")
 	public void updateGuestTest() throws Exception {
 		Guest guest = new Guest();
-		guest.setName("Test One");
+		guest.setName("Test one updated");
 		guest.setEmail("test1@test.com");
 		guest.setPhoneNumber("1523689715");
 		guest.setTypeGuest("plus");
 		guest.setCheckInDate("2022-08-09");
 		guest.setCheckOutDate("2022-08-09");
-		assertNotNull(guestService.updateGuest(1L, guest));
+		assertNotNull(guestService.updateGuest(5L, guest));
 	}
 	
 	@Test
