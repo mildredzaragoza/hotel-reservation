@@ -27,11 +27,11 @@ public class GuestService {
     }
     
     public ArrayList<Guest> getAllGuests() throws Exception{
-    	if(!guestRepository.findAll().isEmpty()){
+    //	if(!guestRepository.findAll().isEmpty()){
     		return (ArrayList<Guest>) guestRepository.findAll();	
-        }else{
-            throw new Exception("There are no guests");	
-    	}
+    //    }else{
+    //        throw new Exception("There are no guests");	
+    //	}
     }
 
     public Guest getGuestById(Long id) throws Exception {
