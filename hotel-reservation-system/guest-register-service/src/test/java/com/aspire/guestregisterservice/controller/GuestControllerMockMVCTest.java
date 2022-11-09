@@ -6,6 +6,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import org.junit.jupiter.api.DisplayName;
@@ -17,6 +18,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import com.aspire.guestregisterservice.models.Guest;
@@ -90,12 +92,27 @@ public class GuestControllerMockMVCTest {
     	Guest demoGuest = new Guest();
     	demoGuest.setName("Demo Guest");
     	demoGuest.setEmail("demo@demo.com");
-    	String jsonRequest = objectMapper.writeValueAsString(demoGuest);
     	when(guestService.saveGuest(any(Guest.class))).thenReturn(demoGuest);
     	mockMvc.perform(MockMvcRequestBuilders.post("/guests")
-    		   .content(jsonRequest)
-    		   .contentType(MediaType.APPLICATION_JSON_VALUE))
-    		   .andExpect(MockMvcResultMatchers.status().isOk());
-    	verify(guestService).saveGuest(new Guest());
+    			.content(objectMapper.writeValueAsString(new Guest()))
+    			.contentType(MediaType.APPLICATION_JSON))
+    		   .andExpect(MockMvcResultMatchers.status().isOk())
+    		   .andDo(MockMvcResultHandlers.print());
     }
+    
+    @Test
+    @DisplayName("Update guest test")
+    public void updateGuestTest() throws Exception {
+    	Guest newGuest = new Guest();
+    	newGuest.setName("Demo guest updated");
+    	newGuest.setEmail("demoupdatedguest@demo.com");
+    	when(guestService.updateGuest(1L, any(Guest.class))).thenReturn(newGuest);
+    	mockMvc.perform(MockMvcRequestBuilders.put("/guests/{id}", 1L)
+    			.content(objectMapper.writeValueAsString(newGuest))
+    			.contentType(MediaType.APPLICATION_JSON))
+    			.andExpect(MockMvcResultMatchers.status().isOk())
+    			.andDo(MockMvcResultHandlers.print());
+    	
+    }
+    
 }
