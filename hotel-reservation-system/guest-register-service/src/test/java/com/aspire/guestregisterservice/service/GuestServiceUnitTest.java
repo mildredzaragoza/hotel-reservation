@@ -69,17 +69,19 @@ public class GuestServiceUnitTest {
     @Test
     @DisplayName("Get guest by id test")
     public void getGuestByIdTest() throws Exception {
-    	when(guestRepository.findById(any())).thenReturn(Optional.empty());
-    	guestService.getGuestById(5L);
+    	Guest demoGuest = new Guest();
+    	when(guestRepository.findById(any())).thenReturn(Optional.of(demoGuest));
+    	guestService.getGuestById(1L);
     	verify(guestRepository).findById(any());
     }
    
     @Test
     @DisplayName("Update guest test")
     public void updateGuestTest() throws Exception {
-    	when(guestRepository.findById(any())).thenReturn(Optional.empty());
-    	when(guestRepository.save(any(Guest.class))).thenReturn(new Guest());
-    	guestService.updateGuest(5L, new Guest());
+    	Guest demoGuest = new Guest();
+    	when(guestRepository.findById(any())).thenReturn(Optional.of(demoGuest));
+    	when(guestRepository.save(any(Guest.class))).thenReturn(demoGuest);
+    	guestService.updateGuest(5L, demoGuest);
     	verify(guestRepository, times(1)).save(any(Guest.class));
     }
     

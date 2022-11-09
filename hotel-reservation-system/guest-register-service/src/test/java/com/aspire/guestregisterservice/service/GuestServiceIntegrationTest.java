@@ -10,7 +10,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.dao.EmptyResultDataAccessException;
 
 import com.aspire.guestregisterservice.models.Guest;
 
@@ -96,7 +95,7 @@ class GuestServiceIntegrationTest {
 	@Test 
 	@DisplayName("Test delete guest with id doesn't exist")
 	public void testDeleteGuestNotExistingId() throws Exception {
-		assertThrows(EmptyResultDataAccessException.class, () -> guestService.deleteGuest(80L)); 
+		assertFalse(guestService.deleteGuest(80L));
 		
 	}
 }

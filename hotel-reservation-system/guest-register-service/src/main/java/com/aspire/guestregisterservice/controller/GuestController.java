@@ -95,16 +95,13 @@ public class GuestController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Guest deleted successfully"),
             @ApiResponse(responseCode = "404", description = "Guest to delete not found"),
-            @ApiResponse(responseCode = "500", description = "Something went wrong"),
     })
     @DeleteMapping("/{id}")
     public ResponseEntity<Boolean> deleteGuest(@Parameter(description = "id of guest to be deleted") @PathVariable Long id){
-        try {
-			return new ResponseEntity<Boolean>(guestService.deleteGuest(id), HttpStatus.OK);
-		}catch(EmptyResultDataAccessException exception) {
+        if(guestService.deleteGuest(id)) {
+        	return new ResponseEntity<Boolean>(guestService.deleteGuest(id), HttpStatus.OK);
+		}else{
 			return new ResponseEntity<Boolean>(false, HttpStatus.NOT_FOUND);
-    	} catch (Exception exception) {
-			return new ResponseEntity<Boolean>(false, HttpStatus.BAD_GATEWAY);
 		}
     }
 }

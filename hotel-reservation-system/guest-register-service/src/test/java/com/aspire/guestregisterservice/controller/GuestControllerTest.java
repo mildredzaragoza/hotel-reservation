@@ -61,7 +61,7 @@ class GuestControllerTest {
 		ResponseEntity<Guest> responseEntity = guestController.getGuestById(100L);
 		assertEquals(responseEntity.getStatusCode(), HttpStatus.NOT_FOUND);
 	}
-	
+
 	@Test
 	@DisplayName("Test update guest")
 	public void updateGuestTest() {

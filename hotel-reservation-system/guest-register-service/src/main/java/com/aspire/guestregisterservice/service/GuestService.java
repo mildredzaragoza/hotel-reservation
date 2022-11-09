@@ -32,14 +32,14 @@ public class GuestService {
     }
 
     public Optional<Guest> getGuestById(Long id) throws Exception {
-       try {
-    	   return guestRepository.findById(id);
-       }catch(NoSuchElementException exception) {
-    	   throw new NoSuchElementException("Guest with ID " + id + " doesn't exist");
-       }catch(Exception exception) {
-    	   throw new Exception("Something went wrong, try again.");
-       }
-    }
+        try {
+     	   return guestRepository.findById(id);
+        }catch(NoSuchElementException exception) {
+     	   throw new NoSuchElementException("Guest with ID " + id + " doesn't exist");
+        }catch(Exception exception) {
+     	   throw new Exception("Something went wrong, try again.");
+        }
+     }
 
     public Guest updateGuest(Long id, Guest guest) throws Exception {
     	try {
@@ -60,14 +60,12 @@ public class GuestService {
     	}  
     }
 
-    public boolean deleteGuest(Long id) throws Exception{
+    public boolean deleteGuest(Long id){
         try {
             guestRepository.deleteById(id);
             return true;
-        }catch(EmptyResultDataAccessException exception) {
-        	throw new EmptyResultDataAccessException("Does not exist guest with ID " + id, 1);
-    	}catch (Exception exception){
-        	throw new Exception("Something went wrong");
+        }catch (Exception exception){
+        	return false;
         }
     }
 
