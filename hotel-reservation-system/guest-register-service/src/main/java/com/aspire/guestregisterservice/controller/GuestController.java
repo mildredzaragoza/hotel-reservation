@@ -26,14 +26,14 @@ public class GuestController {
     @ApiOperation(value = "Gets all guests registered")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Guests found"),
-            @ApiResponse(responseCode = "204", description = "There are no guests"),
+            @ApiResponse(responseCode = "404", description = "There are no guests"),
     })
     @GetMapping
     public ResponseEntity<List<Guest>> getAllGuest(){
     	try {
 			return new ResponseEntity<List<Guest>>(guestService.getAllGuests(), HttpStatus.OK);
 		} catch (Exception exception) {
-			return new ResponseEntity<List<Guest>>(new ArrayList<Guest>(), HttpStatus.NO_CONTENT);
+			return new ResponseEntity<List<Guest>>(new ArrayList<Guest>(), HttpStatus.NOT_FOUND);
 		}
     }
 
