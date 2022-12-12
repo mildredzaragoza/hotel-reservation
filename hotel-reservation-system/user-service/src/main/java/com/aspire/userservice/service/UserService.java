@@ -1,5 +1,6 @@
 package com.aspire.userservice.service;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,5 +41,14 @@ public class UserService {
 			exception.printStackTrace();
 			throw new Exception("Something went wrong");
 		}  
+    }
+    
+    public List<User> getUsers() throws Exception{
+    	try {
+    		return  userRepository.findAll();
+    	}catch (Exception exception) {
+    		throw new Exception("Something went wrong");
+    	}
+    	
     }
 }

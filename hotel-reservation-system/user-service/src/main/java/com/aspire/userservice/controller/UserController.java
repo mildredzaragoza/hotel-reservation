@@ -1,8 +1,12 @@
 package com.aspire.userservice.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -44,5 +48,19 @@ public class UserController {
 		} catch (Exception exception) {
 			return new ResponseEntity<User>(new User(), HttpStatus.BAD_GATEWAY);
 		}
+    }
+    
+    @ApiOperation(value = "Get users")
+    @ApiResponses(value = {
+    		@ApiResponse(responseCode = "200", description ="Users found"),
+    		@ApiResponse(responseCode = "500", description = "Something went wrong")
+    })
+    @GetMapping()
+    public ResponseEntity<List<User>> getUsers(){
+    	try {
+    		return new ResponseEntity<List<User>>(userService.getUsers(), HttpStatus.OK);
+    	}catch (Exception exception) {
+    		return new ResponseEntity<List<User>>(new ArrayList<User>(), HttpStatus.BAD_GATEWAY);
+    	}
     }
 }
